@@ -1,89 +1,194 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/11.9.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.9.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.9.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주식 물타기 계산기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 폰트를 Inter로 설정하고, 한글은 Noto Sans KR로 대체합니다. */
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        }
+        /* 입력 필드에서 화살표 숨기기 */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="calculator-container bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">주식 물타기 계산기</h1>
+            <p class="text-sm sm:text-base text-slate-500 mt-2">
+                현재가에서 특정 비율만큼 상승 시 손익분기점에 도달하기 위한 추가 매수 수량과 비용을 계산합니다.
+            </p>
+        </div>
+        
+        <!-- 입력 폼 -->
+        <form id="calc-form" class="space-y-4">
+            <div>
+                <label for="current_avg_price" class="block text-sm font-medium text-slate-600 mb-1">나의 평균단가 (원)</label>
+                <input type="number" id="current_avg_price" value="12230" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 12230" required>
+            </div>
+            <div>
+                <label for="current_shares" class="block text-sm font-medium text-slate-600 mb-1">보유 주식 수</label>
+                <input type="number" id="current_shares" value="100" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 100" required>
+            </div>
+            <div>
+                <label for="current_stock_price" class="block text-sm font-medium text-slate-600 mb-1">현재가 (추가 매수할 가격, 원)</label>
+                <input type="number" id="current_stock_price" value="10930" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 10930" required>
+            </div>
+            <div>
+                <label for="target_rise_percentage" class="block text-sm font-medium text-slate-600 mb-1">목표 상승률 (%)</label>
+                <input type="number" id="target_rise_percentage" value="3" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+            </div>
+            <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
+                계산하기
+            </button>
+        </form>
+
+        <!-- 결과 표시 영역 -->
+        <div id="result" class="result-container mt-6">
+            <!-- 결과가 여기에 동적으로 삽입됩니다. -->
+        </div>
+
+        <!-- 유의사항 -->
+        <div class="mt-6 text-xs text-slate-400 bg-slate-50 p-4 rounded-lg">
+            <h4 class="font-bold text-slate-500 mb-1">※ 유의사항</h4>
+            <ul class="list-disc list-inside space-y-1">
+                <li>본 계산은 매매 수수료 및 세금을 고려하지 않은 참고용입니다.</li>
+                <li>추가 매수(물타기)는 주가가 계속 하락할 경우 손실액이 더 커질 수 있는 위험이 있습니다.</li>
+                <li>모든 투자의 최종 결정과 책임은 투자자 본인에게 있습니다.</li>
+            </ul>
+        </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        document.getElementById('calc-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // 폼의 기본 제출 동작(새로고침)을 막습니다.
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+            // 1. 사용자 입력 값 가져오기 (숫자형으로 변환)
+            const current_avg_price = parseFloat(document.getElementById('current_avg_price').value);
+            const current_shares = parseInt(document.getElementById('current_shares').value);
+            const current_stock_price = parseFloat(document.getElementById('current_stock_price').value);
+            const target_rise_percentage = parseFloat(document.getElementById('target_rise_percentage').value);
+            
+            const resultDiv = document.getElementById('result');
+
+            // 2. 입력 값 유효성 검사
+            if (isNaN(current_avg_price) || isNaN(current_shares) || isNaN(current_stock_price) || isNaN(target_rise_percentage)) {
+                displayMessage('모든 값을 숫자로 올바르게 입력해주세요.', 'error');
+                return;
+            }
+
+            // 3. 계산 로직 수행
+            const target_price = current_stock_price * (1 + target_rise_percentage / 100);
+
+            if (current_avg_price <= target_price) {
+                displayMessage('현재 평균단가가 이미 목표가보다 낮아 추가 매수가 필요 없습니다.', 'info');
+                return;
+            }
+
+            // 분모가 0이 되거나 음수가 되는 경우 방지
+            if (target_price - current_stock_price <= 0) {
+                const targetPriceFormatted = target_price.toLocaleString('ko-KR', { maximumFractionDigits: 0 });
+                displayMessage(`목표가(${targetPriceFormatted}원)가 현재가보다 낮거나 같아 계산할 수 없습니다. 목표 상승률을 높여주세요.`, 'error');
+                return;
+            }
+
+            const shares_to_buy_float = (current_shares * (current_avg_price - target_price)) / (target_price - current_stock_price);
+            const shares_to_buy = Math.ceil(shares_to_buy_float); // 주식은 정수 단위로 매수해야 하므로 올림
+            const additional_cost = shares_to_buy * current_stock_price;
+
+            const total_shares = current_shares + shares_to_buy;
+            const total_investment = (current_avg_price * current_shares) + additional_cost;
+            const new_avg_price = total_investment / total_shares;
+
+            // 4. 결과 출력
+            displayResult({
+                target_price,
+                shares_to_buy,
+                additional_cost,
+                new_avg_price,
+                total_shares
+            });
+        });
+
+        /**
+         * 숫자를 한국식 통화 형식으로 포맷팅하는 함수
+         * @param {number} number - 포맷팅할 숫자
+         * @param {number} fractionDigits - 소수점 자릿수
+         * @returns {string} 포맷팅된 문자열
+         */
+        function formatNumber(number, fractionDigits = 0) {
+            return number.toLocaleString('ko-KR', {
+                minimumFractionDigits: fractionDigits,
+                maximumFractionDigits: fractionDigits
+            });
         }
-      });
+        
+        /**
+         * 결과를 화면에 표시하는 함수
+         * @param {object} data - 결과 데이터 객체
+         */
+        function displayResult(data) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">🎯 목표 손익분기점 주가</span>
+                            <span class="font-bold text-slate-800">${formatNumber(data.target_price, 2)}원</span>
+                        </div>
+                        <div class="flex justify-between items-center text-base sm:text-lg">
+                            <span class="font-medium text-blue-800">🔢 추가 매수 필요 수량</span>
+                            <span class="font-bold text-blue-600">${formatNumber(data.shares_to_buy)}주</span>
+                        </div>
+                        <div class="flex justify-between items-center text-base sm:text-lg">
+                            <span class="font-medium text-blue-800">💰 예상 추가 비용</span>
+                            <span class="font-bold text-blue-600">${formatNumber(Math.round(data.additional_cost))}원</span>
+                        </div>
+                        <hr class="border-t border-blue-200 my-2">
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">📊 매수 후 예상 평단</span>
+                            <span class="font-bold text-slate-800">${formatNumber(data.new_avg_price, 2)}원</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">📊 매수 후 총 보유량</span>
+                            <span class="font-bold text-slate-800">${formatNumber(data.total_shares)}주</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * 정보 또는 오류 메시지를 화면에 표시하는 함수
+         * @param {string} text - 표시할 메시지
+         * @param {string} type - 메시지 종류 ('info' 또는 'error')
+         */
+        function displayMessage(text, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            const colorClass = type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-yellow-50 border-yellow-200 text-yellow-800';
+            resultDiv.innerHTML = `
+                <div class="${colorClass} p-4 rounded-lg text-center font-medium">
+                    ${text}
+                </div>
+            `;
+        }
+
+        // 페이지 로드 시 초기 계산을 한 번 실행
+        document.addEventListener('DOMContentLoaded', () => {
+             document.querySelector('#calc-form button[type="submit"]').click();
+        });
     </script>
-  </body>
+</body>
 </html>
