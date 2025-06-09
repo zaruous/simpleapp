@@ -23,54 +23,66 @@
     </style>
 </head>
 <body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
-
-    <div class="calculator-container bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">주식 물타기 계산기</h1>
-            <p class="text-sm sm:text-base text-slate-500 mt-2">
-                현재가에서 특정 비율만큼 상승 시 손익분기점에 도달하기 위한 추가 매수 수량과 비용을 계산합니다.
-            </p>
-        </div>
-        
-        <!-- 입력 폼 -->
-        <form id="calc-form" class="space-y-4">
-            <div>
-                <label for="current_avg_price" class="block text-sm font-medium text-slate-600 mb-1">나의 평균단가 (원)</label>
-                <input type="number" id="current_avg_price" value="12230" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 12230" required>
-            </div>
-            <div>
-                <label for="current_shares" class="block text-sm font-medium text-slate-600 mb-1">보유 주식 수</label>
-                <input type="number" id="current_shares" value="100" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 100" required>
-            </div>
-            <div>
-                <label for="current_stock_price" class="block text-sm font-medium text-slate-600 mb-1">현재가 (추가 매수할 가격, 원)</label>
-                <input type="number" id="current_stock_price" value="10930" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 10930" required>
-            </div>
-            <div>
-                <label for="target_rise_percentage" class="block text-sm font-medium text-slate-600 mb-1">목표 상승률 (%)</label>
-                <input type="number" id="target_rise_percentage" value="3" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
-            </div>
-            <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
-                계산하기
-            </button>
-        </form>
-
-        <!-- 결과 표시 영역 -->
-        <div id="result" class="result-container mt-6">
-            <!-- 결과가 여기에 동적으로 삽입됩니다. -->
-        </div>
-
-        <!-- 유의사항 -->
-        <div class="mt-6 text-xs text-slate-400 bg-slate-50 p-4 rounded-lg">
-            <h4 class="font-bold text-slate-500 mb-1">※ 유의사항</h4>
-            <ul class="list-disc list-inside space-y-1">
-                <li>본 계산은 매매 수수료 및 세금을 고려하지 않은 참고용입니다.</li>
-                <li>추가 매수(물타기)는 주가가 계속 하락할 경우 손실액이 더 커질 수 있는 위험이 있습니다.</li>
-                <li>모든 투자의 최종 결정과 책임은 투자자 본인에게 있습니다.</li>
-            </ul>
-        </div>
+  <div class="flex">
+    <div class="w-1/4 p-4 bg-gray-200 h-screen">
+      <ul class="space-y-2">
+        <li><a href="index.html" class="text-blue-600 hover:underline">메인 페이지</a></li>
+        <li><a href="charts_examples.html" class="text-blue-600 hover:underline">샘플 차트</a></li>
+      </ul>
     </div>
+    
+    <div class="w-3/4 p-4">
+        <div class="calculator-container bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
+          <div class="text-center mb-6">
+              <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">주식 물타기 계산기</h1>
+              <p class="text-sm sm:text-base text-slate-500 mt-2">
+                  현재가에서 특정 비율만큼 상승 시 손익분기점에 도달하기 위한 추가 매수 수량과 비용을 계산합니다.
+              </p>
+          </div>
+          
+          <!-- 입력 폼 -->
+          <form id="calc-form" class="space-y-4">
+              <div>
+                  <label for="current_avg_price" class="block text-sm font-medium text-slate-600 mb-1">나의 평균단가 (원)</label>
+                  <input type="number" id="current_avg_price" value="12230" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 12230" required>
+              </div>
+              <div>
+                  <label for="current_shares" class="block text-sm font-medium text-slate-600 mb-1">보유 주식 수</label>
+                  <input type="number" id="current_shares" value="100" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 100" required>
+              </div>
+              <div>
+                  <label for="current_stock_price" class="block text-sm font-medium text-slate-600 mb-1">현재가 (추가 매수할 가격, 원)</label>
+                  <input type="number" id="current_stock_price" value="10930" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="예: 10930" required>
+              </div>
+              <div>
+                  <label for="target_rise_percentage" class="block text-sm font-medium text-slate-600 mb-1">목표 상승률 (%)</label>
+                  <input type="number" id="target_rise_percentage" value="3" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+              </div>
+              <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
+                  계산하기
+              </button>
+          </form>
 
+          <!-- 결과 표시 영역 -->
+          <div id="result" class="result-container mt-6">
+              <!-- 결과가 여기에 동적으로 삽입됩니다. -->
+          </div>
+
+          <!-- 유의사항 -->
+          <div class="mt-6 text-xs text-slate-400 bg-slate-50 p-4 rounded-lg">
+              <h4 class="font-bold text-slate-500 mb-1">※ 유의사항</h4>
+              <ul class="list-disc list-inside space-y-1">
+                  <li>본 계산은 매매 수수료 및 세금을 고려하지 않은 참고용입니다.</li>
+                  <li>추가 매수(물타기)는 주가가 계속 하락할 경우 손실액이 더 커질 수 있는 위험이 있습니다.</li>
+                  <li>모든 투자의 최종 결정과 책임은 투자자 본인에게 있습니다.</li>
+              </ul>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+   
     <script>
         document.getElementById('calc-form').addEventListener('submit', function(event) {
             event.preventDefault(); // 폼의 기본 제출 동작(새로고침)을 막습니다.
