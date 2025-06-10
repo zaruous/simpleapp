@@ -83,6 +83,22 @@
 
    
     <script>
+
+		const strData = localStorage.getItem("data");
+
+		if(strData)
+		{
+			const data = JSON.parse(strData);
+			if(data.current_avg_price)
+				document.getElementById('current_avg_price').value = data.current_avg_price;
+			if(data.current_shares)
+				document.getElementById('current_shares').value = data.current_shares;
+			if(data.current_stock_price)
+				document.getElementById('current_stock_price').value = data.current_stock_price;
+			if(data.target_rise_percentage)
+				document.getElementById('target_rise_percentage').value = data.target_rise_percentage;
+		}
+
         document.getElementById('calc-form').addEventListener('submit', function(event) {
             event.preventDefault(); // 폼의 기본 제출 동작(새로고침)을 막습니다.
 
@@ -122,6 +138,14 @@
             const total_shares = current_shares + shares_to_buy;
             const total_investment = (current_avg_price * current_shares) + additional_cost;
             const new_avg_price = total_investment / total_shares;
+
+			localStorage.setItem("data", JSON.stringify({
+				current_avg_price : current_avg_price,
+				current_shares: current_shares,
+				current_stock_price : current_stock_price,
+				target_rise_percentage : target_rise_percentage
+			}));
+
 
             // 4. 결과 출력
             displayResult({
