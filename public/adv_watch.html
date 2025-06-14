@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Watch - 내일의 워치를 오늘 만나다</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* 사용자 정의 스타일 */
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: #121212;
+      color: #E0E0E0;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #4F46E5, #A855F7, #EC4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card {
+      background-color: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    }
+    .cta-button {
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(79, 70, 229, 0.8);
+    }
+    .section-title {
+      font-weight: 900;
+    }
+    .scroll-animation {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .scroll-animation.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="bg-black/30 backdrop-blur-md fixed w-full z-50 top-0">
+  <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-white">Galaxy <span class="gradient-text">Watch</span></h1>
+    <div class="hidden md:flex space-x-8 items-center">
+      <a href="#features" class="text-gray-300 hover:text-white transition">주요 기능</a>
+      <a href="#design" class="text-gray-300 hover:text-white transition">디자인</a>
+      <a href="#health" class="text-gray-300 hover:text-white transition">건강 관리</a>
+      <a href="#specs" class="text-gray-300 hover:text-white transition">제품 사양</a>
+    </div>
+    <button class="bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-500 cta-button text-sm">지금 구매하기</button>
+  </div>
+</nav>
+
+<!-- Hero Section with Video -->
+<header class="h-screen relative flex items-center justify-center text-center overflow-hidden">
+  <!-- Background Video -->
+  <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+    <source src="001.mp4" type="video/mp4">
+    영상이 지원되지 않는 브라우저입니다.
+  </video>
+  <!-- Video Overlay -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/60 z-10"></div>
+  <!-- Hero Content -->
+  <div class="relative z-20 px-4">
+    <h2 class="text-4xl md:text-7xl font-black text-white leading-tight mb-4">
+      새로운 시대의 <span class="gradient-text">시작</span>.<br> 바로 당신의 손목 위에서.
+    </h2>
+    <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+      일상의 모든 순간을 더 스마트하게. 건강, 운동, 그리고 연결성까지. 갤럭시 워치가 당신의 삶을 완벽하게 동기화합니다.
+    </p>
+    <a href="#" class="bg-indigo-600 text-white font-bold text-lg px-10 py-4 rounded-full hover:bg-indigo-500 cta-button inline-block">
+      자세히 알아보기
+    </a>
+  </div>
+</header>
+
+<main class="container mx-auto px-6 py-20">
+  <!-- Features Section -->
+  <section id="features" class="py-20">
+    <h2 class="section-title text-4xl md:text-5xl text-center mb-16 scroll-animation">혁신의 중심, <span class="gradient-text">주요 기능</span></h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1: Health Monitoring -->
+      <div class="card p-8 rounded-2xl text-center scroll-animation">
+        <div class="flex justify-center mb-4">
+          <svg class="w-16 h-16 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-white">첨단 건강 모니터링</h3>
+        <p class="text-gray-400">심박수, 혈중 산소, 수면 패턴 분석부터 체성분 측정까지. 내 몸을 가장 잘 아는 파트너가 되어 드립니다.</p>
+      </div>
+      <!-- Feature 2: Seamless Connectivity -->
+      <div class="card p-8 rounded-2xl text-center scroll-animation" style="transition-delay: 0.1s;">
+        <div class="flex justify-center mb-4">
+          <svg class="w-16 h-16 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-white">완벽한 연결성</h3>
+        <p class="text-gray-400">스마트폰 없이도 전화, 메시지, 스트리밍이 가능합니다. 갤럭시 버즈와의 자동 전환으로 편리함을 더하세요.</p>
+      </div>
+      <!-- Feature 3: Performance -->
+      <div class="card p-8 rounded-2xl text-center scroll-animation" style="transition-delay: 0.2s;">
+        <div class="flex justify-center mb-4">
+          <svg class="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h3 class="text-2xl font-bold mb-3 text-white">강력한 퍼포먼스</h3>
+        <p class="text-gray-400">더 빠르고 강력해진 프로세서와 오래가는 배터리로 하루 종일, 어떤 활동에도 막힘없이 함께합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design Section -->
+  <section id="design" class="py-20">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="scroll-animation">
+        <h2 class="section-title text-4xl md:text-5xl mb-6">당신을 위한 <span class="gradient-text">디자인</span></h2>
+        <p class="text-lg text-gray-300 mb-4">프리미엄 소재와 슬림한 베젤, 그리고 당신의 스타일에 맞춰 매일 바꿀 수 있는 수천 가지의 워치 페이스까지. 갤럭시 워치는 단순한 스마트 기기를 넘어 당신의 개성을 표현하는 패션 아이템입니다.</p>
+        <ul class="space-y-3 text-gray-400">
+          <li class="flex items-center"><svg class="w-5 h-5 text-indigo-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> 티타늄 프레임의 견고함과 고급스러움</li>
+          <li class="flex items-center"><svg class="w-5 h-5 text-indigo-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> 다양한 소재와 컬러의 스트랩</li>
+          <li class="flex items-center"><svg class="w-5 h-5 text-indigo-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> TPO에 맞는 커스텀 워치 페이스</li>
+        </ul>
+      </div>
+      <div class="scroll-animation">
+        <img src="https://placehold.co/600x600/2a2a2a/ffffff?text=다양한+워치+디자인" alt="갤럭시 워치 디자인" class="rounded-3xl shadow-2xl" onerror="this.onerror=null;this.src='https://placehold.co/600x600';">
+      </div>
+    </div>
+  </section>
+
+  <!-- Health & Fitness Section -->
+  <section id="health" class="py-20 text-center">
+    <h2 class="section-title text-4xl md:text-5xl mb-6 scroll-animation">더 건강한 내일을 위한 <span class="gradient-text">가이드</span></h2>
+    <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-12 scroll-animation">단순한 걸음 수 측정을 넘어, 당신의 운동 목표 달성을 돕고, 수면의 질을 분석하며, 건강한 습관을 만들도록 동기를 부여합니다.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="card p-6 rounded-2xl scroll-animation">
+        <p class="text-4xl font-bold gradient-text">90+</p>
+        <p class="text-gray-400 mt-2">가지 운동 측정</p>
+      </div>
+      <div class="card p-6 rounded-2xl scroll-animation" style="transition-delay: 0.1s;">
+        <p class="text-4xl font-bold gradient-text">체성분</p>
+        <p class="text-gray-400 mt-2">BIA 센서 측정</p>
+      </div>
+      <div class="card p-6 rounded-2xl scroll-animation" style="transition-delay: 0.2s;">
+        <p class="text-4xl font-bold gradient-text">수면</p>
+        <p class="text-gray-400 mt-2">코칭 프로그램</p>
+      </div>
+      <div class="card p-6 rounded-2xl scroll-animation" style="transition-delay: 0.3s;">
+        <p class="text-4xl font-bold gradient-text">IP68</p>
+        <p class="text-gray-400 mt-2">방수/방진 등급</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs Section -->
+  <section id="specs" class="py-20">
+    <h2 class="section-title text-4xl md:text-5xl text-center mb-12 scroll-animation">한 눈에 보는 <span class="gradient-text">제품 사양</span></h2>
+    <div class="max-w-4xl mx-auto card rounded-2xl p-8 scroll-animation">
+      <div class="grid md:grid-cols-2 gap-8 text-lg">
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">디스플레이</h4>
+          <p class="text-gray-400">Super AMOLED, 사파이어 크리스탈 글래스</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">프로세서</h4>
+          <p class="text-gray-400">Exynos W930 Dual-Core 1.4GHz</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">배터리</h4>
+          <p class="text-gray-400">최대 40시간 사용 가능 (일반 사용 기준)</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">메모리 & 스토리지</h4>
+          <p class="text-gray-400">2.0GB RAM + 16GB 내장 메모리</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">센서</h4>
+          <p class="text-gray-400">가속도, 자이로, 심박, 혈압, 체성분, 온도 등</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2">연결</h4>
+          <p class="text-gray-400">LTE, Bluetooth 5.3, Wi-Fi, NFC, GPS</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-black/50 border-t border-gray-800">
+  <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+    <h3 class="text-2xl font-bold text-white mb-2">Galaxy <span class="gradient-text">Watch</span></h3>
+    <p class="mb-6">내일의 워치를 오늘 당신의 손목에.</p>
+    <div class="flex justify-center space-x-6 mb-6">
+      <a href="#" class="hover:text-white transition">Facebook</a>
+      <a href="#" class="hover:text-white transition">Instagram</a>
+      <a href="#" class="hover:text-white transition">YouTube</a>
+    </div>
+    <p class="text-sm">&copy; 2025 Samsung Electronics Co., Ltd. All Rights Reserved.</p>
+    <p class="text-xs mt-2">본 페이지의 제품 이미지 및 스펙은 실제와 다를 수 있습니다.</p>
+  </div>
+</footer>
+
+<script>
+  // 스크롤 애니메이션 스크립트
+  const scrollElements = document.querySelectorAll('.scroll-animation');
+
+  const elementInView = (el, dividend = 1) => {
+    const elementTop = el.getBoundingClientRect().top;
+    return (
+            elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+    );
+  };
+
+  const displayScrollElement = (element) => {
+    element.classList.add('visible');
+  };
+
+  const hideScrollElement = (element) => {
+    element.classList.remove('visible');
+  }
+
+  const handleScrollAnimation = () => {
+    scrollElements.forEach((el) => {
+      if (elementInView(el, 1.25)) {
+        displayScrollElement(el);
+      }
+    })
+  }
+
+  window.addEventListener('scroll', () => {
+    handleScrollAnimation();
+  });
+
+  // 초기 로드 시에도 애니메이션 적용
+  window.addEventListener('load', () => {
+    handleScrollAnimation();
+  });
+</script>
+</body>
+</html>
