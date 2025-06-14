@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디자이너 포트폴리오</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 폰트를 Inter와 Noto Sans KR로 설정 */
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* 갤러리 호버 효과를 위한 CSS */
+        .gallery-item .overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- 네비게이션 바 -->
+    <header class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-wider">PORTFOLIO</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#work" class="text-gray-300 hover:text-white transition-colors duration-300">Work</a>
+                <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300">About</a>
+                <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- 모바일 메뉴 -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4">
+            <a href="#work" class="block py-2 text-gray-300 hover:text-white">Work</a>
+            <a href="#about" class="block py-2 text-gray-300 hover:text-white">About</a>
+            <a href="#contact" class="block py-2 text-gray-300 hover:text-white">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- 히어로 섹션 -->
+        <section id="hero" class="h-screen flex items-center justify-center text-center bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/1a202c/ffffff?text=Main+Image');">
+            <div class="bg-black bg-opacity-60 p-8 md:p-16 rounded-lg">
+                <h1 class="text-4xl md:text-7xl font-black text-white uppercase tracking-widest">Visionary Design</h1>
+                <p class="text-lg md:text-2xl text-gray-300 mt-4 max-w-2xl">상상을 현실로 만드는 비주얼 스토리텔러, [김영준]입니다.</p>
+                <a href="#work" class="mt-8 inline-block bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-500 transition-all duration-300 transform hover:scale-105">내 작품 보기</a>
+            </div>
+        </section>
+
+        <!-- 작품 갤러리 섹션 -->
+        <section id="work" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Images</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    <!-- 갤러리 아이템 1 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <source src="001.mp4" type="video/mp4">
+                            브라우저가 비디오 태그를 지원하지 않습니다.
+                        </video>
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">3D 디자인</h3>
+                                <p class="text-gray-300 mt-2">Brand Identity Design</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 갤러리 아이템 2 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <img src="004.jpg" alt="프로젝트 2 이미지" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">할머니</h3>
+                                <p class="text-gray-300 mt-2">Web/App UI/UX Design</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 갤러리 아이템 3 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <img src="005.png" alt="프로젝트 3 이미지" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">Project Title 3</h3>
+                                <p class="text-gray-300 mt-2">Illustration</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 갤러리 아이템 4 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <img src="006.png" alt="프로젝트 4 이미지" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">Project Title 4</h3>
+                                <p class="text-gray-300 mt-2">Package Design</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 갤러리 아이템 5 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <img src="007.png" alt="프로젝트 5 이미지" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">Project Title 5</h3>
+                                <p class="text-gray-300 mt-2">Motion Graphics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 갤러리 아이템 6 -->
+                    <div class="gallery-item group relative overflow-hidden rounded-lg shadow-lg">
+                        <img src="008.png" alt="프로젝트 6 이미지" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="overlay absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white">Project Title 6</h3>
+                                <p class="text-gray-300 mt-2">Editorial Design</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 자기소개 섹션 -->
+        <section id="about" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/3">
+                        <img src="003.jpg" alt="디자이너 프로필 사진" class="rounded-full shadow-2xl mx-auto">
+                    </div>
+                    <div class="md:w-2/3 text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">About Me</h2>
+                        <p class="mt-6 text-lg text-gray-300 leading-relaxed">
+                            안녕하세요, 저는 [X]년차 디자이너 [당신의 이름]입니다. 사용자의 경험을 최우선으로 생각하며, 비즈니스 목표에 부합하는 창의적이고 효과적인 디자인을 만듭니다. 브랜딩부터 UI/UX, 일러스트레이션까지 다양한 분야에서 전문성을 키워왔습니다.
+                        </p>
+                        <p class="mt-4 text-lg text-gray-300 leading-relaxed">
+                            새로운 트렌드를 학습하고 다양한 툴을 익히는 것을 즐기며, 동료와의 협업을 통해 더 나은 결과물을 만드는 과정에서 큰 보람을 느낍니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 섹션 -->
+        <section id="contact" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Get In Touch</h2>
+                <p class="text-lg text-gray-400 mt-4">새로운 프로젝트나 협업 기회에 대해 이야기하고 싶습니다. 편하게 연락 주세요!</p>
+                <div class="mt-8">
+                    <a href="mailto:callakrsos@naver.com" class="text-2xl font-semibold text-indigo-400 hover:text-indigo-300 transition-colors duration-300">callakrsos@naver.com</a>
+                </div>
+                <div class="mt-8 flex justify-center space-x-6">
+                    <!-- 소셜 미디어 아이콘 -->
+                    <a href="https://github.com/zaruous/simpleapp" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.738 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.745 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" /></svg>
+                    </a>
+					<!--
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                    </a>
+					-->
+                    <a href="https://www.facebook.com/callakr" class="text-gray-400 hover:text-white transition-colors duration-300">
+                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.28 11.75c.34 0 .62.28.62.62v1.25c0 .34-.28.62-.62.62h-2.12v4.25c0 .34-.28.62-.62.62h-1.5c-.34 0-.62-.28-.62-.62v-4.25H9.25c-.34 0-.62-.28-.62-.62v-1.25c0-.34.28-.62.62-.62h1.13v-1.5c0-1.09.64-2.52 2.52-2.52h1.5c.34 0 .62.28.62.62v1.25h-1.5c-.25 0-.38.13-.38.38v1.25h2.13z" clip-rule="evenodd" /></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 border-t border-gray-700">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-400">
+            <p>&copy; <span id="year"></span> [김영준]. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 현재 연도를 자동으로 푸터에 표시
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 모바일 메뉴 토글
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 네비게이션 링크 클릭 시 부드럽게 스크롤 (모바일 메뉴 포함)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // 모바일 메뉴가 열려있으면 닫기
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
