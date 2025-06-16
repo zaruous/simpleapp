@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear-Gradient 샘플 갤러리 (호환성 개선)</title>
+  <style>
+    /* 기본 스타일 */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Noto+Sans+KR:wght@400&display=swap');
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #111827;
+      color: #E5E7EB;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    /* 헤더 스타일 */
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #4F46E5, #A855F7, #EC4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent; /* 헤더 텍스트도 그라디언트 적용 */
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #9CA3AF;
+    }
+
+    /* 갤러리 레이아웃 */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    /* 그라디언트 카드 스타일 */
+    .card {
+      background-color: #1F2937;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 1px solid #374151;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* === 텍스트 그라디언트 미리보기 스타일 === */
+    .gradient-text-preview {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      text-align: center;
+      padding: 1rem 0;
+      /* 텍스트 색상을 투명하게 설정하여 배경이 보이도록 함 */
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 배경 그라디언트 미리보기 스타일 */
+    .gradient-swatch-preview {
+      width: 100%;
+      height: 100px;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-title {
+      color: #9CA3AF;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: -0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* 코드 표시 스타일 */
+    .code-block {
+      background-color: #111827;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.875rem;
+      color: #A5B4FC;
+      word-wrap: break-word;
+      border: 1px solid #4B5563;
+    }
+
+    .section-title {
+      grid-column: 1 / -1;
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #F9FAFB;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #4F46E5;
+      padding-bottom: 0.5rem;
+    }
+
+    /* === 모든 그라디언트 클래스 정의 (background -> background-image로 수정) === */
+    .g-1 { background-image: linear-gradient(90deg, #FDBB2D, #22C1C3); }
+    .g-2 { background-image: linear-gradient(90deg, #FC466B, #3F5EFB); }
+    .g-3 { background-image: linear-gradient(45deg, #00c6ff, #0072ff); }
+    .g-4 { background-image: linear-gradient(to right, #ff7e5f, #feb47b); }
+    .g-5 { background-image: linear-gradient(to left, #6a11cb, #2575fc); }
+    .g-6 { background-image: linear-gradient(120deg, #a1c4fd, #c2e9fb); }
+    .g-7 { background-image: linear-gradient(135deg, #f093fb, #f5576c); }
+    .g-8 { background-image: linear-gradient(to top, #c471f5, #fa71cd); }
+    .g-9 { background-image: linear-gradient(60deg, #3f2b96, #a8c0ff); }
+    .g-10 { background-image: linear-gradient(180deg, #e0c3fc, #8ec5fc); }
+    .g-11 { background-image: linear-gradient(90deg, #FF512F, #DD2476); }
+    .g-12 { background-image: linear-gradient(45deg, #FF4E50, #F9D423); }
+    .g-13 { background-image: linear-gradient(to right, #F7971E, #FFD200); }
+    .g-14 { background-image: linear-gradient(135deg, #56ab2f, #a8e063); }
+    .g-15 { background-image: linear-gradient(90deg, #ED213A, #93291E); }
+    .g-16 { background-image: linear-gradient(to right, #cb2d3e, #ef473a); }
+    .g-17 { background-image: linear-gradient(45deg, #e52d27, #b31217); }
+    .g-18 { background-image: linear-gradient(to bottom, #D31027, #EA384D); }
+    .g-19 { background-image: linear-gradient(90deg, #d38312, #a83279); }
+    .g-20 { background-image: linear-gradient(120deg, #f2709c, #ff9472); }
+    .g-21 { background-image: linear-gradient(120deg, #a6c0fe, #f68084); }
+    .g-22 { background-image: linear-gradient(45deg, #d4fc79, #96e6a1); }
+    .g-23 { background-image: linear-gradient(to right, #84fab0, #8fd3f4); }
+    .g-24 { background-image: linear-gradient(to bottom, #a8edea, #fed6e3); }
+    .g-25 { background-image: linear-gradient(90deg, #e2d1c3, #fdfbfb); }
+    .g-26 { background-image: linear-gradient(135deg, #f6d365, #fda085); }
+    .g-27 { background-image: linear-gradient(to top, #fbc2eb, #a6c1ee); }
+    .g-28 { background-image: linear-gradient(60deg, #ffdde1, #ee9ca7); }
+    .g-29 { background-image: linear-gradient(to right, #eea2a2, #bbc1bf); }
+    .g-30 { background-image: linear-gradient(90deg, #accbee, #e7f0fd); }
+    .g-31 { background-image: linear-gradient(90deg, #434343, #000000); }
+    .g-32 { background-image: linear-gradient(to right, #0f2027, #203a43, #2c5364); }
+    .g-33 { background-image: linear-gradient(60deg, #2c3e50, #4ca1af); }
+    .g-34 { background-image: linear-gradient(135deg, #141e30, #243b55); }
+    .g-35 { background-image: linear-gradient(to right, #1d2b64, #f8cdda); }
+    .g-36 { background-image: linear-gradient(90deg, #232526, #414345); }
+    .g-37 { background-image: linear-gradient(to right, #485563, #29323c); }
+    .g-38 { background-image: linear-gradient(120deg, #16222A, #3A6073); }
+    .g-39 { background-image: linear-gradient(45deg, #373B44, #4286f4); }
+    .g-40 { background-image: linear-gradient(to bottom, #304352, #d7d2cc); }
+    .g-41 { background-image: linear-gradient(to right, #ff7e5f, #feb47b, #ffeda0); }
+    .g-42 { background-image: linear-gradient(120deg, #000428, #004e92); }
+    .g-43 { background-image: linear-gradient(to right, #134E5E, #71B280); }
+    .g-44 { background-image: linear-gradient(135deg, #74ebd5, #ACB6E5); }
+    .g-45 { background-image: linear-gradient(to right, #2C3E50, #FD746C); }
+    .g-46 { background-image: linear-gradient(to right, #FFFDE4, #005AA7); }
+    .g-47 { background-image: linear-gradient(124deg, #1f005c, #5b0060, #870160, #ac255e, #ca485c, #e16b5c, #f39060, #ffb56b); }
+    .g-48 { background-image: linear-gradient(90deg, #f5af19, #f12711); }
+    .g-49 { background-image: linear-gradient(90deg, #11998e, #38ef7d); }
+    .g-50 { background-image: linear-gradient(to top, #ffc3a0, #ffafbd); }
+    .g-51 { background-image: linear-gradient(90deg, #4b6cb7, #182848, #4b6cb7); }
+    .g-52 { background-image: linear-gradient(to right, #00b09b, #96c93d, #e9d66b); }
+    .g-53 { background-image: linear-gradient(135deg, #667eea, #764ba2, #6B8DD6); }
+    .g-54 { background-image: linear-gradient(45deg, #85FFBD, #FFFB7D, #E0C3FC); }
+    .g-55 { background-image: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fad0c4); }
+    .g-56 { background-image: linear-gradient(90deg, #00d2ff, #3a7bd5, #00d2ff); }
+    .g-57 { background-image: linear-gradient(to right, #f857a6, #ff5858, #ff6b6b); }
+    .g-58 { background-image: linear-gradient(120deg, #d299c2, #fef9d7, #b0f3f1); }
+    .g-59 { background-image: linear-gradient(to left, #ff0844, #ffb199, #f89b29); }
+    .g-60 { background-image: linear-gradient(45deg, #4facfe, #00f2fe, #4facfe); }
+    .g-61 { background-image: linear-gradient(90deg, #0D47A1, #1976D2, #42A5F5); }
+    .g-62 { background-image: linear-gradient(to right, #004D40, #00796B, #4DB6AC); }
+    .g-63 { background-image: linear-gradient(135deg, #B71C1C, #D32F2F, #F44336); }
+    .g-64 { background-image: linear-gradient(to bottom, #311B92, #512DA8, #7E57C2); }
+    .g-65 { background-image: linear-gradient(45deg, #212121, #616161, #9E9E9E); }
+    .g-66 { background-image: linear-gradient(90deg, #E65100, #F57C00, #FFA726); }
+    .g-67 { background-image: linear-gradient(to right, #004d40, #009688); }
+    .g-68 { background-image: linear-gradient(120deg, #880E4F, #C2185B, #E91E63); }
+    .g-69 { background-image: linear-gradient(90deg, #3E2723, #5D4037, #795548); }
+    .g-70 { background-image: linear-gradient(to top, #006064, #00BCD4, #B2EBF2); }
+    .g-71 { background-image: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); }
+    .g-72 { background-image: linear-gradient(to right, #C0C0C0, #D3D3D3, #E0E0E0, #D3D3D3, #C0C0C0); }
+    .g-73 { background-image: linear-gradient(to right, #b87333, #ddb07e, #b87333); }
+    .g-74 { background-image: linear-gradient(45deg, #E6A4B4, #F3D7CA, #E6A4B4); }
+    .g-75 { background-image: linear-gradient(135deg, #7A7A7A, #B1B1B1, #7A7A7A); }
+    .g-76 { background-image: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888, #9a26b3, #7232bd); }
+    .g-77 { background-image: linear-gradient(135deg, #1DB954, #121212); }
+    .g-78 { background-image: linear-gradient(90deg, #3c8ce7, #00eaff); }
+    .g-79 { background-image: linear-gradient(to right, #ff00cc, #333399); }
+    .g-80 { background-image: linear-gradient(90deg, #00F260, #0575E6); }
+    .g-81 { background-image: linear-gradient(to right, #141E30, #243B55); }
+    .g-82 { background-image: linear-gradient(to right, #d2b4de, #a7d7c5, #f7e1d3); }
+    .g-83 { background-image: linear-gradient(to right, #8E7A5B, #D8C7A8); }
+    .g-84 { background-image: linear-gradient(45deg, #FF512F, #F09819); }
+    .g-85 { background-image: linear-gradient(to right, #7DE2FC, #B9B6E5); }
+    .g-86 { background-image: linear-gradient(315deg, #2a2a72, #009ffd); }
+    .g-87 { background-image: linear-gradient(225deg, #FF3CAC, #784BA0, #2B86C5); }
+    .g-88 { background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1); }
+    .g-89 { background-image: linear-gradient(70deg, #622774, #C53364); }
+    .g-90 { background-image: linear-gradient(160deg, #0093E9, #80D0C7); }
+    .g-91 { background-image: linear-gradient(20deg, #20E2D7, #F9FEA5); }
+    .g-92 { background-image: linear-gradient(-20deg, #b721ff, #21d4fd); }
+    .g-93 { background-image: linear-gradient(315deg, #fbb034, #ffdd00); }
+    .g-94 { background-image: linear-gradient(to right, #9796f0, #fbc7d4); }
+    .g-95 { background-image: linear-gradient(10deg, #efd5ff, #515ada); }
+    .g-96 { background-image: linear-gradient(132deg, #F4D03F, #16A085); }
+    .g-97 { background-image: linear-gradient(to top left, #30cfd0, #330867); }
+    .g-98 { background-image: linear-gradient(135deg, #2AFADF, #4C83FF); }
+    .g-99 { background-image: linear-gradient(to bottom right, #55EFCB, #5B99F1); }
+    .g-100 { background-image: linear-gradient(15deg, #13547a, #80d0c7); }
+    .g-101 { background-image: linear-gradient(62deg, #FBAB7E, #F7CE68, #F7CE68); }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Linear-Gradient Gallery</h1>
+  <p>다양한 그라디언트 샘플을 텍스트와 배경에 적용한 모습입니다. (호환성 개선)</p>
+</header>
+
+<div class="gallery" id="gallery-container">
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const galleryContainer = document.getElementById('gallery-container');
+    const gradients = [
+      { theme: '기본 & 단순 (Basic & Simple)', start: 1, end: 10 },
+      { theme: '활기찬 조합 (Vibrant & Bold)', start: 11, end: 20 },
+      { theme: '파스텔톤 조합 (Soft & Pastel)', start: 21, end: 30 },
+      { theme: '어두운 조합 (Elegant & Dark)', start: 31, end: 40 },
+      { theme: '자연 (Nature-Inspired)', start: 41, end: 50 },
+      { theme: '다중 색상 (Multi-Color)', start: 51, end: 60 },
+      { theme: '단색톤 (Monochromatic)', start: 61, end: 70 },
+      { theme: '메탈릭 (Metallic)', start: 71, end: 75 },
+      { theme: '특별한 테마 (Special Themes)', start: 76, end: 85 },
+      { theme: '추가 보너스 (Bonus)', start: 86, end: 101 },
+    ];
+
+    // CSS에서 정의된 스타일 규칙을 가져오는 함수 (backgroundImage를 가져오도록 수정)
+    function getGradientCss(className) {
+      const styleSheets = document.styleSheets;
+      for (let i = 0; i < styleSheets.length; i++) {
+        try {
+          // 일부 브라우저에서는 cssRules 접근 시 보안 오류가 발생할 수 있습니다.
+          if (!styleSheets[i].cssRules) continue;
+          const rules = styleSheets[i].cssRules;
+          for (let j = 0; j < rules.length; j++) {
+            if (rules[j].selectorText === `.${className}`) {
+              // background-image 속성 값을 반환합니다.
+              return rules[j].style.backgroundImage;
+            }
+          }
+        } catch (e) {
+          console.warn("Can't read the css rules of: " + styleSheets[i].href, e);
+        }
+      }
+      return '';
+    }
+
+    let htmlContent = '';
+    gradients.forEach(section => {
+      htmlContent += `<h2 class="section-title">${section.theme}</h2>`;
+      for (let i = section.start; i <= section.end; i++) {
+        const className = `g-${i}`;
+        const gradientCss = getGradientCss(className);
+
+        // 배경과 텍스트 미리보기에 모두 동일한 그라디언트 클래스 적용
+        // .gradient-text-preview 에는 background-clip: text가 적용되어 텍스트 효과가 나타남
+        // .gradient-swatch-preview 에는 해당 속성이 없어 배경 효과가 나타남
+        // .g-X 클래스들은 background-image만 지정하여 다른 속성을 덮어쓰지 않음
+        htmlContent += `
+            <div class="card">
+                <div class="preview-title">Text Effect</div>
+                <div class="gradient-text-preview ${className}">Sample</div>
+                <div class="preview-title">Background</div>
+                <div class="gradient-swatch-preview ${className}"></div>
+                <div class="code-block">background-image: ${gradientCss};</div>
+            </div>
+        `;
+      }
+    });
+
+    galleryContainer.innerHTML = htmlContent;
+  });
+</script>
+
+</body>
+</html>

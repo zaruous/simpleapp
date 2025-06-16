@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Watch 상세 정보 - 당신의 모든 순간을 특별하게</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: #121212;
+      color: #E0E0E0;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #4F46E5, #A855F7, #EC4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-bg {
+      background-color: #1a1a1a;
+    }
+    .cta-button {
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(79, 70, 229, 0.8);
+    }
+    .tab-button {
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .tab-button.active {
+      color: #4F46E5;
+      border-bottom-color: #4F46E5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="bg-black/30 backdrop-blur-md sticky w-full z-50 top-0">
+  <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+    <a href="#" class="text-2xl font-bold text-white">Galaxy <span class="gradient-text">Watch</span></a>
+    <div>
+      <!--
+      <a href="javascript:history.back()" class="bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-500 cta-button text-sm">메인으로 돌아가기</a>
+      -->
+      <a href="adv_watch.html" class="bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-500 cta-button text-sm">메인으로 돌아가기</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container mx-auto px-6 py-12">
+
+  <!-- Product Showcase Section -->
+  <section class="text-center py-12">
+    <h1 class="text-4xl md:text-6xl font-black text-white">당신을 가장 잘 아는 시계</h1>
+    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">일상부터 특별한 순간까지, 모든 것을 기록하고 관리하며 당신의 잠재력을 깨워보세요.</p>
+    <div class="mt-10">
+      <img src="009.png" alt="갤럭시 워치 메인 이미지" class="rounded-2xl mx-auto shadow-2xl" onerror="this.onerror=null;this.src='https://placehold.co/1200x600';">
+    </div>
+  </section>
+
+  <!-- Detailed Features Section -->
+  <section class="py-20 space-y-24">
+    <!-- Feature: Health -->
+    <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+      <div class="md:w-1/2">
+        <img src="010.png" alt="건강 모니터링" class="rounded-2xl shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x500';">
+      </div>
+      <div class="md:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">손목 위의 <span class="gradient-text">건강 코치</span></h2>
+        <p class="text-gray-300 mb-6">BIA 센서로 체지방률, 골격근량 등 체성분을 단 15초 만에 측정하세요. 수면 중 혈중 산소 농도와 코골이를 감지하여 수면의 질을 높일 수 있도록 돕고, 실시간 심박수 모니터링으로 항상 건강 상태를 체크합니다.</p>
+        <ul class="text-gray-400 space-y-2">
+          <li>- 체성분(BIA) 측정</li>
+          <li>- 혈중 산소 및 심박수 모니터링</li>
+          <li>- 상세한 수면 분석 및 코칭</li>
+          <li>- 여성 건강 모니터링</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Feature: Design & Customization -->
+    <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+      <div class="md:w-1/2">
+        <img src="011.png" alt="디자인과 스트랩" class="rounded-2xl shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x500';">
+      </div>
+      <div class="md:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span class="gradient-text">스타일</span>을 완성하는<br>디자인</h2>
+        <p class="text-gray-300 mb-6">티타늄, 아머 알루미늄 등 프리미엄 소재로 제작되어 견고하고 아름답습니다. 스포츠 밴드부터 가죽 스트랩까지, 다양한 스트랩으로 개성을 표현하고, 수천 가지 워치 페이스로 매일 새로운 스타일을 연출해보세요.</p>
+        <a href="#" class="text-indigo-400 font-semibold hover:text-indigo-300">워치 페이스 스튜디오 바로가기 &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Feature: Performance & Connectivity -->
+    <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+      <div class="md:w-1/2">
+        <img src="012.png" alt="퍼포먼스와 연결성" class="rounded-2xl shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x500';">
+      </div>
+      <div class="md:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">끊김 없는 <span class="gradient-text">일상</span></h2>
+        <p class="text-gray-300 mb-6">강력해진 성능의 칩셋과 길어진 배터리 시간으로 하루 종일 당신과 함께합니다. Wear OS 기반으로 다양한 Google 앱과 삼성 갤럭시 서비스를 손목 위에서 바로 이용할 수 있습니다. LTE 모델은 스마트폰 없이도 자유로운 통신을 보장합니다.</p>
+        <ul class="text-gray-400 space-y-2">
+          <li>- 최대 40시간의 배터리 수명</li>
+          <li>- Wear OS Powered by Samsung</li>
+          <li>- Google 지도, YouTube Music 등 앱 지원</li>
+          <li>- 스마트폰 카메라 원격 제어</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specifications Section -->
+  <section id="specs" class="py-20 section-bg rounded-2xl">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">상세 제품 사양</h2>
+    <div class="max-w-4xl mx-auto px-4">
+      <table class="w-full text-left border-collapse">
+        <tbody>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">소재</td>
+          <td class="py-4 text-gray-400">Titanium or Armor Aluminum, Sapphire Crystal</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">디스플레이</td>
+          <td class="py-4 text-gray-400">1.4” (34.6mm) 450x450 Super AMOLED, Full Color Always On Display</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">프로세서</td>
+          <td class="py-4 text-gray-400">Exynos W930 (Dualcore, 5nm) 1.4GHz</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">OS</td>
+          <td class="py-4 text-gray-400">Wear OS Powered by Samsung</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">메모리</td>
+          <td class="py-4 text-gray-400">2.0 GB RAM + 16 GB Internal Memory</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">배터리</td>
+          <td class="py-4 text-gray-400">425mAh (정격) / 최대 40시간</td>
+        </tr>
+        <tr class="border-b border-gray-700">
+          <td class="py-4 font-semibold text-white">내구성</td>
+          <td class="py-4 text-gray-400">5ATM+IP68 / MIL-STD-810H</td>
+        </tr>
+        <tr>
+          <td class="py-4 font-semibold text-white">센서</td>
+          <td class="py-4 text-gray-400">Samsung BioActive Sensor (Optical Heart Rate + Electrical Heart Signal + Bioelectrical Impedance Analysis), Temperature Sensor, Accelerometer, Barometer, Gyro Sensor, Geomagnetic Sensor, Light Sensor</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Purchase Section -->
+  <section class="py-20 text-center">
+    <h2 class="text-4xl md:text-5xl font-black text-white mb-4">당신의 갤럭시 워치를<br>지금 만나보세요</h2>
+    <p class="text-lg text-gray-400 mb-10">모델, 사이즈, 색상을 선택하여 당신에게 꼭 맞는 워치를 찾아보세요.</p>
+    <div class="max-w-md mx-auto space-y-6">
+      <div>
+        <label for="model" class="block text-left font-semibold mb-2 text-white">모델 선택</label>
+        <select id="model" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option>갤럭시 워치6 클래식</option>
+          <option>갤럭시 워치6</option>
+          <option>갤럭시 워치6 프로</option>
+        </select>
+      </div>
+      <div>
+        <label for="color" class="block text-left font-semibold mb-2 text-white">색상 선택</label>
+        <select id="color" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option>블랙</option>
+          <option>실버</option>
+          <option>골드</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-10">
+      <button class="bg-indigo-600 text-white font-bold text-lg px-12 py-4 rounded-full hover:bg-indigo-500 cta-button">
+        구매하기
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-black/50 border-t border-gray-800">
+  <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+    <h3 class="text-2xl font-bold text-white mb-2">Galaxy <span class="gradient-text">Watch</span></h3>
+    <p class="mb-6">내일의 워치를 오늘 당신의 손목에.</p>
+    <div class="flex justify-center space-x-6 mb-6">
+      <a href="#" class="hover:text-white transition">Facebook</a>
+      <a href="#" class="hover:text-white transition">Instagram</a>
+      <a href="#" class="hover:text-white transition">YouTube</a>
+    </div>
+    <p class="text-sm">&copy; 2025 Samsung Electronics Co., Ltd. All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

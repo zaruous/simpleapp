@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MH(화곡) 피트니스 | 당신의 잠재력을 깨우세요</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Heroicons for icons -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    /* Custom styles */
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: #121212; /* 다크 모드 배경 */
+      color: #E0E0E0; /* 기본 텍스트 색상 */
+    }
+    .hero-bg {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('015.jpeg');
+      background-size: cover;
+      background-position: center;
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn-primary {
+      @apply bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105 duration-300 ease-in-out;
+    }
+    .section-title {
+      @apply text-4xl font-extrabold text-center mb-4;
+    }
+    .section-subtitle {
+      @apply text-lg text-gray-400 text-center max-w-2xl mx-auto mb-12;
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- Header -->
+<header id="header" class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex items-center justify-between">
+      <a href="#" class="text-2xl font-bold text-white">
+        <span class="text-sky-400">MH(화곡)</span>피트니스
+      </a>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#programs" class="text-gray-300 hover:text-sky-400 transition">프로그램</a>
+        <a href="#trainers" class="text-gray-300 hover:text-sky-400 transition">트레이너</a>
+        <a href="#testimonials" class="text-gray-300 hover:text-sky-400 transition">후기</a>
+        <a href="#contact" class="text-gray-300 hover:text-sky-400 transition">문의</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
+    <a href="#programs" class="block py-2 px-6 text-sm text-gray-300 hover:bg-gray-800">프로그램</a>
+    <a href="#trainers" class="block py-2 px-6 text-sm text-gray-300 hover:bg-gray-800">트레이너</a>
+    <a href="#testimonials" class="block py-2 px-6 text-sm text-gray-300 hover:bg-gray-800">후기</a>
+    <a href="#contact" class="block py-2 px-6 text-sm text-gray-300 hover:bg-gray-800">문의</a>
+  </div>
+</header>
+
+<main id="main-content">
+  <!-- Hero Section -->
+  <section class="hero-bg h-screen flex items-center justify-center pt-16">
+    <div class="text-center text-white px-4">
+      <h1 class="text-5xl md:text-7xl font-black uppercase mb-4 tracking-wider animate-fade-in-down">
+        당신의 <span class="text-gradient">잠재력</span>을 깨우세요
+      </h1>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-gray-300 animate-fade-in-up">
+        최고의 시설과 전문 트레이너와 함께 건강한 변화를 시작하세요. 피크 피트니스가 당신의 목표 달성을 위한 최고의 파트너가 되어 드립니다.
+      </p>
+      <a href="#contact" class="btn-primary text-lg animate-bounce">
+        무료 체험 신청하기
+      </a>
+    </div>
+  </section>
+
+  <!-- Programs Section -->
+  <section id="programs" class="py-20 bg-gray-900/80 backdrop-blur-sm">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title text-white">우리의 프로그램</h2>
+      <p class="section-subtitle">당신의 목표에 맞는 완벽한 프로그램을 찾아보세요. 초보자부터 전문가까지 모두를 위한 클래스가 준비되어 있습니다.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Program Card 1 -->
+        <div class="bg-gray-800/80 rounded-xl p-8 text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg hover:shadow-sky-500/20">
+          <ion-icon name="barbell-outline" class="text-sky-400 text-6xl mx-auto mb-4"></ion-icon>
+          <h3 class="text-2xl font-bold mb-2 text-white">개인 트레이닝</h3>
+          <p class="text-gray-400">1:1 맞춤형 지도를 통해 가장 빠르고 효과적으로 목표를 달성하세요.</p>
+        </div>
+        <!-- Program Card 2 -->
+        <div class="bg-gray-800/80 rounded-xl p-8 text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg hover:shadow-sky-500/20">
+          <ion-icon name="people-outline" class="text-sky-400 text-6xl mx-auto mb-4"></ion-icon>
+          <h3 class="text-2xl font-bold mb-2 text-white">그룹 클래스</h3>
+          <p class="text-gray-400">에너지 넘치는 분위기에서 함께 운동하며 동기부여를 얻으세요.</p>
+        </div>
+        <!-- Program Card 3 -->
+        <div class="bg-gray-800/80 rounded-xl p-8 text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg hover:shadow-sky-500/20">
+          <ion-icon name="leaf-outline" class="text-sky-400 text-6xl mx-auto mb-4"></ion-icon>
+          <h3 class="text-2xl font-bold mb-2 text-white">요가 & 필라테스</h3>
+          <p class="text-gray-400">몸과 마음의 균형을 찾고 유연성과 코어 근력을 강화하세요.</p>
+        </div>
+        <!-- Program Card 4 -->
+        <div class="bg-gray-800/80 rounded-xl p-8 text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg hover:shadow-sky-500/20">
+          <ion-icon name="speedometer-outline" class="text-sky-400 text-6xl mx-auto mb-4"></ion-icon>
+          <h3 class="text-2xl font-bold mb-2 text-white">체중 감량</h3>
+          <p class="text-gray-400">체계적인 식단과 운동 프로그램으로 건강하게 목표를 달성합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trainers Section -->
+  <section id="trainers" class="py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title text-white">전문 트레이너</h2>
+      <p class="section-subtitle">최고의 실력과 경험을 갖춘 트레이너들이 당신의 여정을 함께합니다.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- Trainer Card 1 -->
+        <div class="bg-gray-800/80 backdrop-blur-sm rounded-lg overflow-hidden text-center">
+          <img src="001.png" alt="트레이너 클로이" class="w-full h-80 object-contain">
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-white">클로이</h3>
+            <p class="text-sky-400 mb-2">근력 강화 전문가</p>
+            <p class="text-gray-400 text-sm">NSCA-CPT, 스포츠 영양학 코치. 10년 이상의 경력으로 회원님의 근력 목표를 책임집니다.</p>
+          </div>
+        </div>
+        <!-- Trainer Card 2 -->
+        <div class="bg-gray-800/80 backdrop-blur-sm rounded-lg overflow-hidden text-center">
+          <img src="002.png" alt="트레이너 박서연" class="w-full h-80 object-contain">
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-white">클로이</h3>
+            <p class="text-sky-400 mb-2">요가 & 재활 필라테스</p>
+            <p class="text-gray-400 text-sm">국제 요가 얼라이언스 RYT500. 몸의 정렬을 바로잡고 마음의 평화를 찾아드립니다.</p>
+          </div>
+        </div>
+        <!-- Trainer Card 3 -->
+        <div class="bg-gray-800/80 backdrop-blur-sm rounded-lg overflow-hidden text-center">
+          <img src="https://placehold.co/400x400/dd6b20/ffffff?text=이진우" alt="트레이너 이진우" class="w-full h-80 object-contain">
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-white">클로이</h3>
+            <p class="text-sky-400 mb-2">다이어트 & 기능성 운동</p>
+            <p class="text-gray-400 text-sm">FISAF 국제 퍼스널 트레이너. 과학적인 방법으로 건강한 다이어트를 도와드립니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-20 bg-gray-900/80 backdrop-blur-sm">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title text-white">회원들의 이야기</h2>
+      <p class="section-subtitle">피크 피트니스와 함께 놀라운 변화를 경험한 분들의 후기를 직접 확인해보세요.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Testimonial Card 1 -->
+        <div class="bg-gray-800/80 p-8 rounded-lg shadow-lg">
+          <p class="text-gray-300 mb-4">"혼자서는 항상 작심삼일이었는데, 트레이너님의 전문적인 코칭 덕분에 3개월 만에 10kg 감량에 성공했습니다! 정말 감사해요!"</p>
+          <div class="flex items-center">
+            <img src="https://placehold.co/48x48/cccccc/1a202c?text=회원1" alt="회원1" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold text-white">최지아 회원</h4>
+              <p class="text-sm text-sky-400">3개월차 회원</p>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial Card 2 -->
+        <div class="bg-gray-800/80 p-8 rounded-lg shadow-lg">
+          <p class="text-gray-300 mb-4">"시설이 정말 깨끗하고 좋아요. 다양한 기구 덕분에 운동하는 재미가 쏠쏠합니다. 그룹 클래스도 활기 넘치고 재밌어요!"</p>
+          <div class="flex items-center">
+            <img src="https://placehold.co/48x48/cccccc/1a202c?text=회원2" alt="회원2" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold text-white">박준서 회원</h4>
+              <p class="text-sm text-sky-400">1년차 회원</p>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial Card 3 -->
+        <div class="bg-gray-800/80 p-8 rounded-lg shadow-lg">
+          <p class="text-gray-300 mb-4">"만성 허리 통증 때문에 고생했는데, 필라테스를 시작하고 나서 정말 많이 좋아졌어요. 삶의 질이 달라졌습니다."</p>
+          <div class="flex items-center">
+            <img src="https://placehold.co/48x48/cccccc/1a202c?text=회원3" alt="회원3" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold text-white">김수현 회원</h4>
+              <p class="text-sm text-sky-400">6개월차 회원</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="contact" class="py-20 text-center bg-cover bg-center" style="background-image: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)),
+        url('https://placehold.co/1920x600/1a202c/ffffff?text=Join+Now')">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-extrabold text-white mb-4">오늘, 변화를 시작하세요</h2>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">더 이상 망설이지 마세요. 지금 바로 무료 상담을 신청하고 당신의 건강한 변화를 위한 첫 걸음을 내딛으세요.</p>
+      <a href="#" class="btn-primary text-xl">
+        무료 상담 신청하기
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900">
+  <div class="container mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="text-center md:text-left mb-4 md:mb-0">
+        <a href="#" class="text-2xl font-bold text-white">
+          <span class="text-sky-400">MH(화곡)</span>피트니스
+        </a>
+        <p class="text-sm text-gray-500 mt-2">© 2025 Created by Kim.</p>
+      </div>
+      <div class="text-center text-gray-400 mb-4 md:mb-0">
+        <p>서울 강서구 화곡로 274 크라운뷰 15층</p>
+        <p>전화: 02-2607-9696</p>
+      </div>
+      <div class="flex space-x-4">
+        <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-instagram" class="text-2xl"></ion-icon></a>
+        <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-facebook" class="text-2xl"></ion-icon></a>
+        <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="chatbubble-ellipses-outline" class="text-2xl"></ion-icon></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Close mobile menu when a link is clicked
+  const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+  mobileMenuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  });
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+
+  // Change header style on scroll
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.classList.add('py-2');
+      header.classList.remove('py-4');
+    } else {
+      header.classList.add('py-4');
+      header.classList.remove('py-2');
+    }
+  });
+
+  // --- 추가된 스크립트: main 섹션 배경 설정 ---
+  // 페이지가 로드될 때 main 요소에 배경 이미지를 설정합니다.
+  window.addEventListener('DOMContentLoaded', () => {
+    const mainElement = document.getElementById('main-content');
+    if(mainElement) {
+      // 여기에 원하는 배경 이미지 URL을 입력하세요.
+      // const backgroundImageUrl = 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1975&auto=format&fit=crop';
+      const backgroundImageUrl = '017.jpeg';
+      mainElement.style.backgroundImage = `url('${backgroundImageUrl}')`;
+      mainElement.style.backgroundSize = 'cover';
+      mainElement.style.backgroundPosition = 'center';
+
+
+      mainElement.style.backgroundAttachment = 'fixed'; // 스크롤 시 배경 고정 효과
+    }
+  });
+</script>
+</body>
+</html>
