@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프리미엄 코스메틱 | 자연과 감각의 조화</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter and Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 기본 폰트 설정 */
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+        /* 섹션간 부드러운 스크롤 */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* 히어로 섹션 그라데이션 */
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 100%);
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<!-- 헤더 -->
+<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-xl md:text-2xl font-bold text-gray-900">
+            <a href="#">AURORA</a>
+        </h1>
+        <nav class="hidden md:flex space-x-8">
+            <a href="#natural-line" class="text-gray-600 hover:text-gray-900 transition duration-300">네이처 라인</a>
+            <a href="#luxury-line" class="text-gray-600 hover:text-gray-900 transition duration-300">럭셔리 라인</a>
+            <a href="#about" class="text-gray-600 hover:text-gray-900 transition duration-300">브랜드 소개</a>
+        </nav>
+        <button class="md:hidden text-gray-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </div>
+</header>
+
+<main>
+    <!-- 히어로 섹션 -->
+    <section class="relative h-[60vh] md:h-[80vh] bg-cover bg-center text-white flex items-center justify-center"
+             style="background-image: url('013.png');">
+        <div class="absolute inset-0 hero-gradient"></div>
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 tracking-tight">자연의 숨결, 감각적인 향기</h2>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto">최상의 원료로 완성된 스킨케어와 향수로 당신의 일상을 특별하게 만드세요.</p>
+        </div>
+    </section>
+
+    <!-- 네이처 라인 섹션 -->
+    <section id="natural-line" class="py-20 md:py-28 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-900">Nature's Essence</h3>
+                <p class="mt-4 text-lg text-gray-600">자연의 생명력을 담은 스킨케어</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                <!-- 제품 이미지 -->
+                <div class="w-full md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="013.png" alt="[오키드 자스민과 아우라 가든 제품 이미지]" class="w-full h-full object-cover">
+                </div>
+                <!-- 제품 설명 -->
+                <div class="w-full md:w-1/2">
+                    <h4 class="text-2xl font-semibold mb-4 text-gray-800">ORCHID JASMIN & AURA GARDEN</h4>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        싱그러운 자연의 에너지를 그대로 담아낸 '오키드 자스민'과 '아우라 가든' 세럼으로 피부 본연의 힘을 깨워보세요.
+                        청정한 환경에서 자란 최상의 식물성 원료가 피부 깊숙이 스며들어 맑고 건강한 광채를 선사합니다.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <p class="ml-3 text-gray-700"><strong>풍부한 보습:</strong> 건조한 피부에 즉각적인 수분을 공급하여 촉촉함을 유지합니다.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <p class="ml-3 text-gray-700"><strong>피부 진정:</strong> 민감해진 피부를 부드럽게 진정시키고 편안함을 줍니다.</p>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-block bg-gray-800 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-700 transition duration-300">자세히 보기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 럭셔리 라인 섹션 -->
+    <section id="luxury-line" class="py-20 md:py-28 bg-gray-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold">Signature Scents</h3>
+                <p class="mt-4 text-lg text-gray-300">당신을 완성하는 특별한 향기</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
+                <!-- 제품 이미지 -->
+                <div class="w-full md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="https://storage.googleapis.com/maker-me-space-os-us/gen-4/user/8aa6efeb-ea4e-437b-ae55-677ca5fb5c8c/이미지 006.jpg" alt="[톰포드와 원우드 향수 제품 이미지]" class="w-full h-full object-cover">
+                </div>
+                <!-- 제품 설명 -->
+                <div class="w-full md:w-1/2">
+                    <h4 class="text-2xl font-semibold mb-4 text-white">TOM FORD & ONEWOOD</h4>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        강렬하고 매혹적인 '타바코 바닐'의 스파이시함과 '원우드'의 깊고 부드러운 우디 향으로 잊을 수 없는 인상을 남기세요.
+                        최고급 원료와 장인정신이 만나 탄생한 향수는 당신의 모든 순간을 더욱 특별하게 만들어 줍니다.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-amber-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 4v4m-2-2h4M17 3l-1.5 1.5M5 21l1.5-1.5M17 21l-1.5-1.5M5 3l1.5 1.5" /></svg>
+                            </div>
+                            <p class="ml-3 text-gray-200"><strong>독창적인 향:</strong> 흔하지 않은 독특한 향의 조합으로 개성을 표현합니다.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-amber-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <p class="ml-3 text-gray-200"><strong>오랜 지속력:</strong> 한 번의 사용으로 온종일 은은하게 퍼지는 향기를 경험하세요.</p>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-block bg-white text-gray-900 font-bold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">향기 만나보기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 브랜드 소개 섹션 -->
+    <section id="about" class="py-20 md:py-28 bg-white">
+        <div class="container mx-auto px-6 text-center max-w-3xl">
+            <h3 class="text-3xl md:text-4xl font-bold text-gray-900">Our Philosophy</h3>
+            <div class="w-24 h-1 bg-gray-800 mx-auto mt-4 mb-6"></div>
+            <p class="text-gray-600 leading-relaxed">
+                저희 AURORA는 최고의 품질을 향한 끊임없는 열정으로 제품을 만듭니다. 자연에서 얻은 순수한 성분과 현대적인 감각이 깃든 특별한 향으로, 당신의 일상에 아름다움과 영감을 더하고자 합니다.
+                단순한 화장품을 넘어, 자신을 표현하는 하나의 예술 작품을 선보입니다.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<!-- 푸터 -->
+<footer class="bg-gray-800 text-gray-300">
+    <div class="container mx-auto px-6 py-10">
+        <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-6 md:mb-0">
+                <h4 class="text-lg font-bold text-white">AURORA</h4>
+                <p class="text-sm">Beauty & Fragrance</p>
+            </div>
+            <div class="flex space-x-6 mb-6 md:mb-0">
+                <a href="#" class="hover:text-white transition duration-300">Instagram</a>
+                <a href="#" class="hover:text-white transition duration-300">Facebook</a>
+                <a href="#" class="hover:text-white transition duration-300">Twitter</a>
+            </div>
+            <div>
+                <p class="text-sm">&copy; 2024 AURORA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
