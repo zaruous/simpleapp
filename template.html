@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS 기본 레이아웃</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Inter 폰트를 기본 폰트로 설정 */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<!-- 전체 레이아웃 컨테이너 -->
+<div class="flex flex-col min-h-screen">
+
+  <!-- 헤더 섹션 -->
+  <header class="bg-white shadow-md">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <!-- 로고 또는 사이트 이름 -->
+        <div class="text-2xl font-bold text-blue-600">
+          <a href="#">내 웹사이트</a>
+        </div>
+        <!-- 네비게이션 메뉴 -->
+        <nav class="hidden md:flex items-center space-x-6">
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition duration-300">홈</a>
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition duration-300">소개</a>
+
+          <!-- 2단계 드롭다운 메뉴 -->
+          <div class="relative group">
+            <button class="flex items-center text-gray-600 hover:text-blue-500 transition duration-300">
+              <span>서비스</span>
+              <!-- 아래 방향 아이콘 -->
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <!-- 드롭다운 메뉴 항목 -->
+            <div class="absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-48">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">서비스 A</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">서비스 B</a>
+              <div class="relative group/submenu">
+                <button class="w-full text-left flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  <span>서비스 C</span>
+                  <!-- 오른쪽 방향 아이콘 -->
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <!-- 3단계 드롭다운 (예시) -->
+                <div class="absolute z-20 left-full top-0 hidden group-hover/submenu:block bg-white shadow-lg rounded-md mt-0 w-48">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">C-1</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">C-2</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition duration-300">연락처</a>
+        </nav>
+        <!-- 모바일 메뉴 버튼 (기능은 JS로 추가 필요) -->
+        <div class="md:hidden">
+          <button class="text-gray-600 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 영역 -->
+  <div class="flex-grow container mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row gap-8">
+
+      <!-- 사이드바 -->
+      <aside class="w-full md:w-1/4">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-4">카테고리</h3>
+          <ul>
+            <li class="mb-2"><a href="#" class="block p-2 rounded hover:bg-blue-50 transition duration-300">기술</a></li>
+            <li class="mb-2"><a href="#" class="block p-2 rounded hover:bg-blue-50 transition duration-300">디자인</a></li>
+            <li class="mb-2"><a href="#" class="block p-2 rounded hover:bg-blue-50 transition duration-300">여행</a></li>
+            <li class="mb-2"><a href="#" class="block p-2 rounded hover:bg-blue-50 transition duration-300">일상</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- 주 콘텐츠 -->
+      <main class="w-full md:w-3/4">
+        <div class="bg-white p-8 rounded-lg shadow-md">
+          <h1 class="text-3xl font-bold mb-4">메인 콘텐츠 제목</h1>
+
+          <!-- 샘플 이미지 영역 -->
+          <div class="mb-6">
+            <img src="https://placehold.co/800x400/EBF4FF/76A9FA?text=Sample+Image"
+                 alt="샘플 이미지"
+                 class="w-full h-auto rounded-lg shadow-md object-cover">
+          </div>
+
+          <p class="mb-6 text-gray-600">
+            이곳에 웹사이트의 주요 내용이 표시됩니다. Tailwind CSS를 사용하면 HTML 내에서 직접 스타일을 적용하여 빠르고 효율적으로 디자인을 구성할 수 있습니다.
+            이 템플릿은 반응형으로 설계되어 데스크톱, 태블릿, 모바일 등 다양한 화면 크기에서 자동으로 레이아웃이 조정됩니다.
+          </p>
+
+          <div class="border-t border-gray-200 pt-6">
+            <h2 class="text-2xl font-semibold mb-4">하위 섹션</h2>
+            <p class="text-gray-600">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+            </p>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- 푸터 섹션 -->
+  <footer class="bg-gray-800 text-white mt-auto">
+    <div class="container mx-auto px-6 py-4">
+      <div class="text-center">
+        &copy; 2024 내 웹사이트. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

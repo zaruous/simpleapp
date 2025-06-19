@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메가커피 공식 홈페이지</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f8f8; /* 밝은 회색 배경 */
+    }
+    /* Custom styles for gradients or specific elements if needed, but primarily using Tailwind */
+    .hero-background {
+      background-image: url('021.jpg'); /* 메가커피 테마 색상 */
+      background-size: cover;
+      background-position: center;
+    }
+    .text-mega-yellow {
+      color: #FFD700; /* 메가커피 시그니처 옐로우 */
+    }
+    .bg-mega-yellow {
+      background-color: #FFD700;
+    }
+    .bg-mega-blue {
+      background-color: #000080; /* 메가커피 시그니처 블루 (네이비) */
+    }
+  </style>
+</head>
+<body class="antialiased">
+<!-- Header Section -->
+<header class="bg-white shadow-md p-4 sticky top-0 z-50">
+  <nav class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <!-- Placeholder for Logo -->
+      <img src="#" alt="메가커피 로고" class="rounded-full">
+      <a href="#" class="text-2xl font-bold text-mega-blue">메가커피</a>
+    </div>
+    <div class="hidden md:flex space-x-6">
+      <a href="#menu" class="text-gray-700 hover:text-mega-blue font-medium transition duration-300">메뉴</a>
+      <a href="#about" class="text-gray-700 hover:text-mega-blue font-medium transition duration-300">메가커피 소개</a>
+      <a href="#locations" class="text-gray-700 hover:text-mega-blue font-medium transition duration-300">매장 찾기</a>
+      <a href="#promotions" class="text-gray-700 hover:text-mega-blue font-medium transition duration-300">프로모션</a>
+      <a href="#contact" class="text-gray-700 hover:text-mega-blue font-medium transition duration-300">문의하기</a>
+    </div>
+    <!-- Mobile Menu Button -->
+    <button class="md:hidden text-gray-700 hover:text-mega-blue focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-background text-white py-20 text-center rounded-b-lg shadow-lg h-full">
+  <div class="container mx-auto px-4">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">오늘도 메가커피와 함께!</h1>
+    <p class="text-xl md:text-2xl mb-8 drop-shadow-md">큰 즐거움, 합리적인 가격!</p>
+    <a href="#menu" class="bg-mega-blue hover:bg-opacity-90 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">메뉴 보러가기</a>
+  </div>
+</section>
+
+<!-- Menu Section -->
+<section id="menu" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center text-mega-blue mb-12">메가커피 메뉴</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Menu Item 1 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="022.png" alt="아메리카노" class="w-full h-64 object-contain ">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">아메리카노</h3>
+          <p class="text-gray-600 mb-4">깊고 진한 풍미의 메가커피 시그니처 아메리카노.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 1,500</p>
+        </div>
+      </div>
+      <!-- Menu Item 2 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="https://placehold.co/600x400/D3D3D3/000000?text=Cafe+Latte" alt="카페라떼" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">카페라떼</h3>
+          <p class="text-gray-600 mb-4">부드러운 우유와 에스프레소의 조화.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 2,700</p>
+        </div>
+      </div>
+      <!-- Menu Item 3 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="https://placehold.co/600x400/D3D3D3/000000?text=Einspanner" alt="메가 에스프레소 슈페너" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">메가 에스프레소 슈페너</h3>
+          <p class="text-gray-600 mb-4">메가커피만의 특별한 크림이 올라간 에스프레소 슈페너.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 4,300</p>
+        </div>
+      </div>
+      <!-- Menu Item 4 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="https://placehold.co/600x400/D3D3D3/000000?text=Strawberry+Latte" alt="딸기 라떼" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">딸기 라떼</h3>
+          <p class="text-gray-600 mb-4">달콤한 딸기 과육이 씹히는 상큼한 라떼.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 3,800</p>
+        </div>
+      </div>
+      <!-- Menu Item 5 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="https://placehold.co/600x400/D3D3D3/000000?text=Lemon+Aide" alt="레몬 에이드" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">레몬 에이드</h3>
+          <p class="text-gray-600 mb-4">톡 쏘는 상큼함이 가득한 레몬 에이드.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 3,500</p>
+        </div>
+      </div>
+      <!-- Menu Item 6 -->
+      <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <img src="https://placehold.co/600x400/D3D3D3/000000?text=Croffle" alt="크로플" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">플레인 크로플</h3>
+          <p class="text-gray-600 mb-4">겉바속촉, 커피와 찰떡궁합 크로플.</p>
+          <p class="text-mega-blue text-xl font-bold">₩ 2,500</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-12">
+      <a href="#" class="bg-mega-yellow hover:bg-opacity-90 text-mega-blue font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">전체 메뉴 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-16 bg-mega-blue text-white">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+    <div class="md:w-1/2">
+      <h2 class="text-4xl font-bold mb-6">메가커피는?</h2>
+      <p class="text-lg leading-relaxed mb-4">
+        메가커피는 '메가톤급'이라는 단어처럼 크고 합리적인 가격의 음료를 제공하여 고객들에게 큰 만족감을 선사합니다. 엄선된 원두와 신선한 재료로 최상의 맛을 지키며, 누구나 부담 없이 즐길 수 있는 카페 문화를 만들어가고 있습니다.
+      </p>
+      <p class="text-lg leading-relaxed">
+        일상 속 작은 행복을 메가커피와 함께 경험하세요!
+      </p>
+    </div>
+    <div class="md:w-1/2">
+      <img src="https://placehold.co/600x400/000080/FFD700?text=Mega+Coffee+About" alt="메가커피 소개 이미지" class="rounded-xl shadow-xl w-full">
+    </div>
+  </div>
+</section>
+
+<!-- Locations Section -->
+<section id="locations" class="py-16 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center text-mega-blue mb-12">가까운 메가커피 매장 찾기</h2>
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+      <p class="text-lg text-gray-700 text-center mb-6">
+        아래 검색창에 지역명을 입력하거나, 현재 위치를 기반으로 가까운 매장을 찾아보세요!
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input type="text" placeholder="예: 강남구, 홍대" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mega-yellow focus:border-transparent">
+        <button class="bg-mega-yellow hover:bg-opacity-90 text-mega-blue font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+          매장 검색
+        </button>
+      </div>
+      <div class="mt-8 text-center text-gray-500">
+        <!-- Placeholder for map or location list -->
+        <p>지도 또는 매장 목록이 여기에 표시됩니다.</p>
+        <img src="https://placehold.co/600x300/E0E0E0/808080?text=Map+Placeholder" alt="지도 플레이스홀더" class="mt-4 rounded-lg shadow-sm mx-auto">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Promotions Section -->
+<section id="promotions" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center text-mega-blue mb-12">진행 중인 프로모션</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Promotion 1 -->
+      <div class="bg-gradient-to-br from-mega-yellow to-yellow-300 rounded-xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 transform transition duration-300 hover:scale-105">
+        <div class="md:w-1/3">
+          <img src="https://placehold.co/200x200/FFFFFF/FFD700?text=New+Drink" alt="신메뉴 프로모션" class="rounded-lg shadow-md w-full">
+        </div>
+        <div class="md:w-2/3 text-mega-blue">
+          <h3 class="text-3xl font-bold mb-3">새로운 여름 시즌 메뉴 출시!</h3>
+          <p class="text-lg mb-4">상큼하고 시원한 여름 음료들을 지금 바로 메가커피에서 만나보세요!</p>
+          <button class="bg-white hover:bg-gray-100 text-mega-blue font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
+            자세히 보기
+          </button>
+        </div>
+      </div>
+      <!-- Promotion 2 -->
+      <div class="bg-gradient-to-br from-mega-blue to-blue-800 rounded-xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 transform transition duration-300 hover:scale-105">
+        <div class="md:w-1/3">
+          <img src="https://placehold.co/200x200/FFFFFF/000080?text=App+Coupon" alt="앱 쿠폰 프로모션" class="rounded-lg shadow-md w-full">
+        </div>
+        <div class="md:w-2/3 text-white">
+          <h3 class="text-3xl font-bold mb-3">메가커피 앱 신규 가입 쿠폰!</h3>
+          <p class="text-lg mb-4">지금 앱 다운로드하고 아메리카노 무료 쿠폰 받으세요!</p>
+          <button class="bg-white hover:bg-gray-100 text-mega-blue font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
+            앱 다운로드
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-gray-200">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-4xl font-bold text-mega-blue mb-8">문의하기</h2>
+    <p class="text-lg text-gray-700 mb-8">궁금한 점이 있으시면 언제든지 문의해주세요!</p>
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+      <form class="space-y-6">
+        <div>
+          <label for="name" class="block text-left text-gray-700 text-sm font-medium mb-2">이름</label>
+          <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mega-yellow focus:border-transparent" placeholder="이름을 입력하세요">
+        </div>
+        <div>
+          <label for="email" class="block text-left text-gray-700 text-sm font-medium mb-2">이메일</label>
+          <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mega-yellow focus:border-transparent" placeholder="이메일을 입력하세요">
+        </div>
+        <div>
+          <label for="message" class="block text-left text-gray-700 text-sm font-medium mb-2">메시지</label>
+          <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mega-yellow focus:border-transparent" placeholder="문의 내용을 입력하세요"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-mega-blue hover:bg-opacity-90 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+          메시지 보내기
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="bg-gray-800 text-white py-10 rounded-t-lg shadow-lg">
+  <div class="container mx-auto px-4 text-center">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+      <div class="mb-4 md:mb-0">
+        <p class="text-xl font-bold">메가커피</p>
+        <p class="text-sm text-gray-400">BIG SIZE, BIG PLEASURE!</p>
+      </div>
+      <div class="flex space-x-4">
+        <a href="#" class="text-gray-400 hover:text-white transition duration-300">이용약관</a>
+        <a href="#" class="text-gray-400 hover:text-white transition duration-300">개인정보처리방침</a>
+        <a href="#" class="text-gray-400 hover:text-white transition duration-300">고객센터</a>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 pt-6 mt-6">
+      <p class="text-sm text-gray-400">&copy; 2025 Mega Coffee. All rights reserved.</p>
+      <p class="text-sm text-gray-400">본 페이지는 교육 목적으로 제작되었습니다.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

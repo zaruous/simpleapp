@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 스케줄 관리 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        /* 스크롤바 디자인 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #a8a8a8;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+        /* 선택된 셀 스타일 */
+        .schedule-cell.selected {
+            background-color: #3b82f6; /* bg-blue-600 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">회원 스케줄 관리 시스템</h1>
+            <p class="text-gray-600 mt-2">회원을 관리하고 날짜별 스케줄을 손쉽게 예약하세요.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 왼쪽: 회원 및 파일 관리 -->
+            <aside class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg">
+                <section>
+                    <h2 class="text-xl font-bold border-b pb-3 mb-4">회원 관리</h2>
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="new-member-name" placeholder="회원 이름 입력" class="flex-grow w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="add-member-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">추가</button>
+                    </div>
+                    <div id="member-list" class="space-y-2">
+                        <!-- 회원 목록이 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </section>
+                
+                <hr class="my-6 border-gray-200">
+
+                <section>
+                    <h2 class="text-xl font-bold border-b pb-3 mb-4">데이터 관리</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button id="save-json-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">JSON 저장</button>
+                        <label for="load-json-input" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg transition-colors cursor-pointer text-center">JSON 로드</label>
+                        <input type="file" id="load-json-input" class="hidden" accept=".json">
+                    </div>
+                </section>
+            </aside>
+
+            <!-- 오른쪽: 스케줄 관리 -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
+                <section>
+                    <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-3 mb-4">
+                        <h2 class="text-xl font-bold mb-2 sm:mb-0">스케줄 관리</h2>
+                        <input type="date" id="date-picker" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="schedule-container" class="overflow-x-auto custom-scrollbar">
+                        <table id="schedule-table" class="w-full border-collapse text-center">
+                            <!-- 스케줄 테이블이 여기에 동적으로 생성됩니다 -->
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM 요소 참조 ---
+            const memberNameInput = document.getElementById('new-member-name');
+            const addMemberBtn = document.getElementById('add-member-btn');
+            const memberListContainer = document.getElementById('member-list');
+            const datePicker = document.getElementById('date-picker');
+            const scheduleTable = document.getElementById('schedule-table');
+            const saveBtn = document.getElementById('save-json-btn');
+            const loadInput = document.getElementById('load-json-input');
+
+            // --- 상태 관리 ---
+            let members = ['김민준', '이서연', '박도윤']; // 기본 회원
+            let scheduleData = {}; // { 'YYYY-MM-DD': { '회원명': ['HH:mm', ...] } }
+
+            // --- 초기화 ---
+            const initialize = () => {
+                // 오늘 날짜로 Date Picker 설정
+                const today = new Date();
+                datePicker.value = today.toISOString().split('T')[0];
+
+                renderMemberList();
+                renderScheduleGrid();
+
+                // 이벤트 리스너 등록
+                addMemberBtn.addEventListener('click', handleAddMember);
+                memberNameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleAddMember();
+                });
+                datePicker.addEventListener('change', renderScheduleGrid);
+                saveBtn.addEventListener('click', handleSaveSchedule);
+                loadInput.addEventListener('change', handleLoadSchedule);
+            };
+
+            // --- 회원 관리 기능 ---
+            const renderMemberList = () => {
+                memberListContainer.innerHTML = '';
+                if (members.length === 0) {
+                    memberListContainer.innerHTML = `<p class="text-gray-500 text-center">회원을 추가해주세요.</p>`;
+                    return;
+                }
+                members.forEach(name => {
+                    const memberDiv = document.createElement('div');
+                    memberDiv.className = 'flex justify-between items-center bg-gray-100 p-3 rounded-lg';
+                    memberDiv.innerHTML = `
+                        <span class="font-medium">${name}</span>
+                        <button data-name="${name}" class="delete-member-btn text-red-500 hover:text-red-700 font-bold">삭제</button>
+                    `;
+                    memberListContainer.appendChild(memberDiv);
+                });
+                // 삭제 버튼에 이벤트 리스너 추가
+                document.querySelectorAll('.delete-member-btn').forEach(btn => {
+                    btn.addEventListener('click', handleDeleteMember);
+                });
+            };
+
+            const handleAddMember = () => {
+                const name = memberNameInput.value.trim();
+                if (name && !members.includes(name)) {
+                    members.push(name);
+                    memberNameInput.value = '';
+                    renderMemberList();
+                    renderScheduleGrid();
+                } else if (members.includes(name)) {
+                    alert('이미 존재하는 회원입니다.');
+                } else {
+                    alert('회원 이름을 입력해주세요.');
+                }
+            };
+            
+            const handleDeleteMember = (e) => {
+                const nameToDelete = e.target.dataset.name;
+                if (confirm(`'${nameToDelete}' 회원을 삭제하시겠습니까? 관련 스케줄도 모두 삭제됩니다.`)) {
+                    members = members.filter(name => name !== nameToDelete);
+                    // 스케줄 데이터에서도 해당 회원 정보 삭제
+                    Object.keys(scheduleData).forEach(date => {
+                        delete scheduleData[date][nameToDelete];
+                    });
+                    renderMemberList();
+                    renderScheduleGrid();
+                }
+            };
+
+
+            // --- 스케줄 관리 기능 ---
+            const renderScheduleGrid = () => {
+                scheduleTable.innerHTML = ''; // 테이블 초기화
+                
+                // 1. 테이블 헤더 생성 (회원명)
+                const thead = document.createElement('thead');
+                thead.className = 'bg-gray-200 sticky top-0';
+                let headerRow = '<tr><th class="p-3 border border-gray-300 w-24">시간</th>';
+                members.forEach(name => {
+                    headerRow += `<th class="p-3 border border-gray-300 min-w-[120px]">${name}</th>`;
+                });
+                headerRow += '</tr>';
+                thead.innerHTML = headerRow;
+                scheduleTable.appendChild(thead);
+
+                // 2. 테이블 바디 생성 (시간대 및 셀)
+                const tbody = document.createElement('tbody');
+                for (let hour = 6; hour <= 23; hour++) {
+                    const time = `${String(hour).padStart(2, '0')}:00`;
+                    let bodyRow = `<tr><td class="p-3 border border-gray-300 font-mono bg-gray-100">${time}</td>`;
+                    members.forEach(name => {
+                        bodyRow += `<td class="schedule-cell border border-gray-300 hover:bg-blue-200 cursor-pointer transition-colors" data-time="${time}" data-member="${name}"></td>`;
+                    });
+                    bodyRow += '</tr>';
+                    tbody.innerHTML += bodyRow;
+                }
+                scheduleTable.appendChild(tbody);
+                
+                updateScheduleView();
+
+                // 3. 셀 클릭 이벤트 리스너 추가
+                document.querySelectorAll('.schedule-cell').forEach(cell => {
+                    cell.addEventListener('click', handleCellClick);
+                });
+            };
+
+            const updateScheduleView = () => {
+                const selectedDate = datePicker.value;
+                const dailySchedule = scheduleData[selectedDate] || {};
+
+                // 모든 셀 초기화
+                document.querySelectorAll('.schedule-cell').forEach(cell => {
+                    cell.classList.remove('selected');
+                });
+                
+                // 저장된 스케줄에 따라 'selected' 클래스 추가
+                members.forEach(name => {
+                    if (dailySchedule[name]) {
+                        dailySchedule[name].forEach(time => {
+                            const cell = document.querySelector(`.schedule-cell[data-member="${name}"][data-time="${time}"]`);
+                            if (cell) {
+                                cell.classList.add('selected');
+                            }
+                        });
+                    }
+                });
+            };
+
+            const handleCellClick = (e) => {
+                const cell = e.target;
+                const { time, member } = cell.dataset;
+                const selectedDate = datePicker.value;
+
+                // 해당 날짜의 스케줄 데이터 초기화
+                if (!scheduleData[selectedDate]) {
+                    scheduleData[selectedDate] = {};
+                }
+                if (!scheduleData[selectedDate][member]) {
+                    scheduleData[selectedDate][member] = [];
+                }
+
+                const scheduleList = scheduleData[selectedDate][member];
+                const timeIndex = scheduleList.indexOf(time);
+
+                if (timeIndex > -1) {
+                    // 이미 선택된 경우 -> 선택 해제
+                    scheduleList.splice(timeIndex, 1);
+                    cell.classList.remove('selected');
+                } else {
+                    // 선택되지 않은 경우 -> 선택
+                    scheduleList.push(time);
+                    cell.classList.add('selected');
+                }
+            };
+
+            // --- 데이터 저장/로드 기능 ---
+            const handleSaveSchedule = () => {
+                const dataToSave = {
+                    members: members,
+                    schedule: scheduleData
+                };
+                const jsonString = JSON.stringify(dataToSave, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `schedule_${datePicker.value}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            const handleLoadSchedule = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const loadedData = JSON.parse(event.target.result);
+                        if (loadedData.members && loadedData.schedule) {
+                            members = loadedData.members;
+                            scheduleData = loadedData.schedule;
+                            
+                            // 데이터 로드 후 화면 전체 새로고침
+                            renderMemberList();
+                            renderScheduleGrid();
+                        } else {
+                            alert('올바른 JSON 파일 형식이 아닙니다.');
+                        }
+                    } catch (error) {
+                        alert('JSON 파일을 읽는 중 오류가 발생했습니다.');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+                // input 값 초기화하여 동일한 파일 다시 로드 가능하게 함
+                e.target.value = null; 
+            };
+            
+            // --- 앱 실행 ---
+            initialize();
+        });
+    </script>
+</body>
+</html>

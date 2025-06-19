@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, red, blue);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="p-4">
+<div class="mx-auto">
+    <!--중간 정렬 -->
+    <h1 class="text-3xl font-bold underline text-[#112233]">
+        Hello world!
+    </h1>
+    <div class="w-full h-10 bg-red-400 text-blue-200 mt-2 flex items-center px-2
+        rounded  hover:bg-blue-500 ">
+        <p>test</p>
+    </div>
+    <div class="flex bg-slate-100 mt-3">
+        <div class="bg-red-50 p-2 gradient-text">나는 플렉스1</div>
+        <div class="bg-yellow-50 p-2">나는 플렉스2</div>
+    </div>
+
+    <!-- 3행 2열 테이블 추가 -->
+    <div class="mt-6">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-200">
+            <tr>
+                <th class="p-3 border border-slate-300">제목 1</th>
+                <th class="p-3 border border-slate-300">제목 2</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="p-3 border  border-slate-300">1</td>
+                <td class="p-3 border border-slate-300">1행 2열</td>
+            </tr>
+            <tr>
+                <td class="p-3 border border-slate-300">2</td>
+                <td class="p-3 border border-slate-300">2행 2열</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+</body>
+</html>
