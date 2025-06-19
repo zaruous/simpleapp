@@ -6,9 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
-public/*.png
-public/*.jpg
-public/*.mp4
+
 
 # Firebase cache
 .firebase/
