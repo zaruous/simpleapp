@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 스케줄 관리 시스템 (IndexedDBHelper 적용)</title>
+    <title>회원 스케줄 관리 시스템 (Firebase Cloud 버전)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
         }
-        /* 스크롤바 디자인 */
         .custom-scrollbar::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -26,9 +25,9 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #888;
         }
-        /* 선택된 셀 스타일 */
         .schedule-cell.selected {
             background-color: #3b82f6; /* bg-blue-600 */
+            color: white;
         }
         .toast {
             visibility: hidden;
@@ -46,26 +45,46 @@
             opacity: 0;
             transition: visibility 0s, opacity 0.5s linear;
         }
-
         .toast.show {
             visibility: visible;
             opacity: 1;
         }
-        /* Modal styles */
         .modal-overlay {
             z-index: 50;
+        }
+        /* 로그인되지 않았을 때 컨텐츠를 흐리게 처리 */
+        .content-disabled {
+            filter: blur(4px);
+            pointer-events: none;
+            user-select: none;
         }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-<div class="container mx-auto p-4 md:p-8">
+<div id="app-container" class="container mx-auto p-4 md:p-8">
     <header class="text-center mb-8">
         <h1 class="text-3xl md:text-4xl font-bold text-gray-900">회원 스케줄 관리 시스템</h1>
-        <p class="text-gray-600 mt-2">회원을 관리하고 날짜별 스케줄을 손쉽게 예약하세요. (데이터 자동 저장)</p>
+        <p class="text-gray-600 mt-2">Google 계정으로 로그인하고 클라우드에 데이터를 안전하게 저장하세요.</p>
     </header>
 
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Auth Section -->
+    <div id="auth-section" class="flex flex-col items-center justify-center bg-white p-6 rounded-2xl shadow-lg mb-8">
+        <div id="user-info" class="hidden text-center">
+            <p id="user-display" class="font-semibold text-lg text-gray-700"></p>
+            <p id="user-id-display" class="text-xs text-gray-500 mt-1"></p>
+            <button id="logout-btn" class="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">로그아웃</button>
+        </div>
+        <div id="login-prompt" class="text-center">
+            <p class="mb-4 font-medium text-gray-700">서비스를 이용하려면 로그인이 필요합니다.</p>
+            <button id="login-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-colors flex items-center gap-2">
+                <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.021,35.596,44,30.138,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+                Google 계정으로 로그인
+            </button>
+        </div>
+    </div>
+
+    <main id="main-content" class="grid grid-cols-1 lg:grid-cols-3 gap-8 content-disabled">
         <!-- 왼쪽: 회원 및 파일 관리 -->
         <aside class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg">
             <section>
@@ -105,9 +124,7 @@
                     </div>
                 </div>
                 <div id="schedule-container" class="overflow-x-auto custom-scrollbar">
-                    <table id="schedule-table" class="w-full border-collapse text-center">
-                        <!-- 스케줄 테이블이 여기에 동적으로 생성됩니다 -->
-                    </table>
+                    <table id="schedule-table" class="w-full border-collapse text-center"></table>
                 </div>
             </section>
         </div>
@@ -125,19 +142,51 @@
             <input type="week" id="week-picker" class="px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             <button id="modal-close-btn" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
         </header>
-        <div id="modal-content" class="p-6 overflow-y-auto custom-scrollbar">
-            <!-- Weekly schedule will be populated here -->
-        </div>
+        <div id="modal-content" class="p-6 overflow-y-auto custom-scrollbar"></div>
     </div>
 </div>
 
 
 <script type="module">
-    // IndexedDBHelper 클래스를 외부 파일에서 가져옵니다.
-    import { IndexedDBHelper } from './IndexedDBHelper.js';
+    // Firebase SDK imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     document.addEventListener('DOMContentLoaded', () => {
+        // --- Firebase Configuration ---
+        // 🚨 SECURITY WARNING: Do not commit this file with real keys to a public repository.
+        // It's recommended to use environment variables for production.
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2aFGko73dm28qnYikMbTbtZLWNaigrJc",
+            authDomain: "kyj-webapp.firebaseapp.com",
+            projectId: "kyj-webapp",
+            storageBucket: "kyj-webapp.appspot.com",
+            messagingSenderId: "515379016462",
+            appId: "1:515379016462:web:7f04d4a7af889ee9855d5f",
+            measurementId: "G-KZ9SS5KKG1"
+        };
+
+        // BUG FIX: This 'appId' is crucial for constructing the database path.
+        // It is expected to be injected by the environment or use a default value.
+        const appId = '1:515379016462:web:7f04d4a7af889ee9855d5f';
+
+
+        // --- Firebase Initialization ---
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
         // --- DOM 요소 참조 ---
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInfoDiv = document.getElementById('user-info');
+        const userDisplay = document.getElementById('user-display');
+        const userIdDisplay = document.getElementById('user-id-display');
+        const loginPromptDiv = document.getElementById('login-prompt');
+        const mainContent = document.getElementById('main-content');
+
         const memberNameInput = document.getElementById('new-member-name');
         const addMemberBtn = document.getElementById('add-member-btn');
         const memberListContainer = document.getElementById('member-list');
@@ -149,30 +198,16 @@
         const viewModeSelect = document.getElementById('view-mode-select');
         const modal = document.getElementById('weekly-schedule-modal');
         const modalTitle = document.getElementById('modal-title');
-        const modalContent = document.getElementById('modal-content');
+        const modalContentEl = document.getElementById('modal-content');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const weekPicker = document.getElementById('week-picker');
 
         // --- 상태 관리 ---
         let members = [];
-        let scheduleData = {}; // { 'YYYY-MM-DD': { '회원명': ['HH:mm', ...] } }
+        let scheduleData = {};
         let viewMode = 'column';
-
-        // --- IndexedDB 설정 (Helper 클래스 사용) ---
-        const dbHelper = new IndexedDBHelper('ScheduleDB', 'scheduleStore');
-        const DB_KEY = 'appData';
-
-        // --- 데이터 자동 저장을 위한 공통 함수 ---
-        const saveData = async () => {
-            try {
-                const dataToSave = { members, scheduleData };
-                await dbHelper.put(DB_KEY, dataToSave);
-                console.log('데이터가 IndexedDB에 자동 저장되었습니다.');
-            } catch (error) {
-                console.error('DB 저장 오류:', error);
-                showToast('데이터 저장에 실패했습니다.');
-            }
-        };
+        let currentUserId = null;
+        let unsubscribeFromFirestore = null; // Firestore listener unsubscriber
 
         // --- 유틸리티 함수 ---
         const showToast = (message) => {
@@ -181,32 +216,127 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         };
 
-        // --- 초기화 ---
-        const initialize = async () => {
-            try {
-                const savedData = await dbHelper.get(DB_KEY);
-                if (savedData && savedData.members) {
-                    members = savedData.members;
-                    scheduleData = savedData.scheduleData || {};
-                    showToast('저장된 데이터를 불러왔습니다.');
-                } else {
-                    // 기본 데이터
-                    members = ['김민준', '이서연', '박도윤'];
-                    scheduleData = {};
-                }
-            } catch (error) {
-                console.error('초기화 중 오류 발생:', error);
-                showToast('데이터 로딩에 실패했습니다.');
-                // 로딩 실패 시 기본 데이터 사용
-                members = ['김민준', '이서연', '박도윤'];
-                scheduleData = {};
-            }
+        // --- UI 상태 업데이트 ---
+        const updateUIForAuthState = (user) => {
+            if (user) {
+                // Logged in
+                currentUserId = user.uid;
+                loginPromptDiv.classList.add('hidden');
+                userInfoDiv.classList.remove('hidden');
+                userDisplay.textContent = `환영합니다, ${user.displayName || '사용자'}님!`;
+                userIdDisplay.textContent = `사용자 ID: ${user.uid}`;
+                mainContent.classList.remove('content-disabled');
+                loadDataFromFirestore(user.uid);
+            } else {
+                // Logged out
+                currentUserId = null;
+                loginPromptDiv.classList.remove('hidden');
+                userInfoDiv.classList.add('hidden');
+                mainContent.classList.add('content-disabled');
 
-            datePicker.value = new Date().toISOString().split('T')[0];
+                if (unsubscribeFromFirestore) {
+                    unsubscribeFromFirestore();
+                    unsubscribeFromFirestore = null;
+                }
+                resetLocalData();
+                renderAll();
+            }
+        };
+
+        // --- Firebase Auth 핸들러 ---
+        loginBtn.addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(error => {
+                console.error("Google 로그인 오류:", error);
+                showToast(`로그인 실패: ${error.message}`);
+            });
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).catch(error => {
+                console.error("로그아웃 오류:", error);
+                showToast(`로그아웃 실패: ${error.message}`);
+            });
+        });
+
+        // --- 데이터 관리 ---
+        const getDocRef = (userId) => {
+            // This now works correctly as 'appId' is defined.
+            return doc(db, 'artifacts', appId, 'users', userId, 'scheduleData', 'main');
+        }
+
+        const saveDataToFirestore = async () => {
+            if (!currentUserId) return;
+            try {
+                const dataToSave = { members, scheduleData };
+                await setDoc(getDocRef(currentUserId), dataToSave);
+                console.log('데이터가 Firestore에 저장되었습니다.');
+            } catch (error) {
+                console.error('Firestore 저장 오류:', error);
+                showToast('데이터 저장에 실패했습니다.');
+            }
+        };
+
+        const loadDataFromFirestore = (userId) => {
+            if (unsubscribeFromFirestore) unsubscribeFromFirestore();
+
+            unsubscribeFromFirestore = onSnapshot(getDocRef(userId), (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    members = data.members || [];
+                    scheduleData = data.scheduleData || {};
+                    showToast('클라우드 데이터를 불러왔습니다.');
+                } else {
+                    showToast('새 사용자입니다. 기본 데이터를 설정합니다.');
+                    resetLocalData(true);
+                    saveDataToFirestore();
+                }
+                renderAll();
+            }, (error) => {
+                console.error("Firestore 데이터 읽기 오류:", error);
+                showToast('데이터를 불러오는 중 오류가 발생했습니다.');
+                resetLocalData();
+                renderAll();
+            });
+        };
+
+        const resetLocalData = (useDefaults = false) => {
+            if (useDefaults) {
+                members = ['김민준', '이서연', '박도윤'];
+            } else {
+                members = [];
+            }
+            scheduleData = {};
+        };
+
+        const renderAll = () => {
             renderMemberList();
             renderScheduleGrid();
+        }
 
-            // Event Listeners
+        // --- 초기화 ---
+        const initialize = () => {
+            datePicker.value = new Date().toISOString().split('T')[0];
+            addEventListeners();
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    updateUIForAuthState(user);
+                } else {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        try {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } catch (error) {
+                            console.error('Custom token sign-in failed, trying anonymous:', error);
+                            try { await signInAnonymously(auth); } catch (e) { updateUIForAuthState(null); }
+                        }
+                    } else {
+                        updateUIForAuthState(null);
+                    }
+                }
+            });
+        };
+
+        const addEventListeners = () => {
             addMemberBtn.addEventListener('click', handleAddMember);
             memberNameInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') handleAddMember();
@@ -229,7 +359,7 @@
                 if (e.target === modal) closeModal();
             });
             weekPicker.addEventListener('change', handleWeekChange);
-        };
+        }
 
         // --- 회원 관리 기능 ---
         const renderMemberList = () => {
@@ -251,14 +381,12 @@
             document.querySelectorAll('.member-name-btn').forEach(btn => btn.addEventListener('click', (e) => handleMemberNameClick(e.currentTarget.textContent)));
         };
 
-        const handleAddMember = async () => {
+        const handleAddMember = () => {
             const name = memberNameInput.value.trim();
             if (name && !members.includes(name)) {
                 members.push(name);
                 memberNameInput.value = '';
-                renderMemberList();
-                renderScheduleGrid();
-                await saveData();
+                saveDataToFirestore();
                 showToast(`'${name}' 회원이 추가되었습니다.`);
             } else if (members.includes(name)) {
                 showToast('이미 존재하는 회원입니다.');
@@ -267,19 +395,16 @@
             }
         };
 
-        const handleDeleteMember = async (e) => {
+        const handleDeleteMember = (e) => {
             const nameToDelete = e.target.dataset.name;
-            if (confirm(`'${nameToDelete}' 회원을 삭제하시겠습니까? 관련 스케줄도 모두 삭제됩니다.`)) {
-                members = members.filter(name => name !== nameToDelete);
-                Object.keys(scheduleData).forEach(date => {
-                    if(scheduleData[date]) delete scheduleData[date][nameToDelete];
-                });
-                renderMemberList();
-                renderScheduleGrid();
-                await saveData();
-                showToast(`'${nameToDelete}' 회원이 삭제되었습니다.`);
-            }
+            members = members.filter(name => name !== nameToDelete);
+            Object.keys(scheduleData).forEach(date => {
+                if(scheduleData[date]) delete scheduleData[date][nameToDelete];
+            });
+            saveDataToFirestore();
+            showToast(`'${nameToDelete}' 회원이 삭제되었습니다.`);
         };
+
 
         // --- 스케줄 관리 기능 ---
         const renderScheduleGrid = () => {
@@ -323,32 +448,33 @@
         const updateScheduleView = () => {
             const selectedDate = datePicker.value;
             const dailySchedule = scheduleData[selectedDate] || {};
-            document.querySelectorAll('.schedule-cell').forEach(cell => cell.classList.remove('selected'));
-            members.forEach(name => {
-                if (dailySchedule[name]) {
-                    dailySchedule[name].forEach(time => {
-                        const cell = document.querySelector(`.schedule-cell[data-member="${name}"][data-time="${time}"]`);
-                        if (cell) cell.classList.add('selected');
-                    });
+            document.querySelectorAll('.schedule-cell').forEach(cell => {
+                cell.classList.remove('selected');
+                const { member, time } = cell.dataset;
+                if (dailySchedule[member] && dailySchedule[member].includes(time)) {
+                    cell.classList.add('selected');
                 }
             });
         };
 
-        const handleCellClick = async (e) => {
+        const handleCellClick = (e) => {
             const { time, member } = e.target.dataset;
             const selectedDate = datePicker.value;
+
             if (!scheduleData[selectedDate]) scheduleData[selectedDate] = {};
             if (!scheduleData[selectedDate][member]) scheduleData[selectedDate][member] = [];
+
             const scheduleList = scheduleData[selectedDate][member];
             const timeIndex = scheduleList.indexOf(time);
+
             if (timeIndex > -1) {
                 scheduleList.splice(timeIndex, 1);
-                e.target.classList.remove('selected');
             } else {
                 scheduleList.push(time);
-                e.target.classList.add('selected');
             }
-            await saveData();
+
+            e.target.classList.toggle('selected');
+            saveDataToFirestore();
         };
 
         // --- Modal/Popup 기능 ---
@@ -397,7 +523,7 @@
                     contentHtml += `<hr class="my-3">`;
                 }
             });
-            modalContent.innerHTML = contentHtml;
+            modalContentEl.innerHTML = contentHtml;
         };
 
         const getWeekDates = (referenceDate) => {
@@ -425,11 +551,11 @@
             if (tempDate.getDay() !== 4) {
                 tempDate.setMonth(0, 1 + ((4 - tempDate.getDay()) + 7) % 7);
             }
-            const weekNum = 1 + Math.ceil((firstThursday - tempDate) / 604800000); // 604800000 = 7 * 24 * 3600 * 1000
+            const weekNum = 1 + Math.ceil((firstThursday - tempDate) / 604800000);
             return `${date.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
         };
 
-        const getDateFromWeekString = (weekString) => { // "YYYY-Www"
+        const getDateFromWeekString = (weekString) => {
             const [year, weekNum] = weekString.split('-W').map(Number);
             const d = new Date(Date.UTC(year, 0, 1 + (weekNum - 1) * 7));
             const dayOfWeek = d.getUTCDay();
@@ -437,7 +563,7 @@
             return new Date(d.setUTCDate(diff));
         };
 
-        // --- 데이터 JSON 저장/로드 기능 ---
+        // --- 데이터 JSON 저장/로드 기능 (로컬 파일) ---
         const handleSaveToJson = () => {
             const dataToSave = { members, scheduleData };
             const jsonString = JSON.stringify(dataToSave, null, 2);
@@ -457,16 +583,14 @@
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = async (event) => {
+            reader.onload = (event) => {
                 try {
                     const loadedData = JSON.parse(event.target.result);
                     if (loadedData.members && loadedData.scheduleData) {
                         members = loadedData.members;
                         scheduleData = loadedData.scheduleData;
-                        renderMemberList();
-                        renderScheduleGrid();
-                        await saveData();
-                        showToast('JSON 파일에서 데이터를 불러왔습니다.');
+                        saveDataToFirestore();
+                        showToast('JSON 파일 데이터를 불러와 클라우드에 저장했습니다.');
                     } else {
                         showToast('올바른 JSON 파일 형식이 아닙니다.');
                     }
@@ -476,7 +600,7 @@
                 }
             };
             reader.readAsText(file);
-            e.target.value = null; // 동일한 파일 다시 선택 가능하도록 초기화
+            e.target.value = null;
         };
 
         // --- 앱 실행 ---
