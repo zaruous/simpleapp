@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firestore 데이터 업로드 예제 (Google 인증)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 사용자 정의 글꼴 및 기본 스타일 */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+<!-- 로그인 전 표시될 화면 -->
+<div id="login-container" class="text-center">
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">Firestore Chat</h1>
+  <p class="text-gray-600 mb-8">시작하려면 Google 계정으로 로그인하세요.</p>
+  <button id="login-btn"
+          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300">
+    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.657-3.356-11.303-7.918l-6.573,4.818C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.012,35.836,44,30.138,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+    Google로 로그인
+  </button>
+</div>
+
+<!-- 로그인 후 표시될 메인 앱 화면 -->
+<div id="app-container" class="w-full max-w-lg p-8 space-y-6 bg-white rounded-xl shadow-lg hidden">
+
+  <!-- 사용자 정보 및 로그아웃 -->
+  <div id="user-profile" class="flex items-center justify-between pb-4 border-b">
+    <!-- 사용자 정보가 여기에 표시됩니다. -->
+  </div>
+
+  <!-- 데이터 입력 폼 -->
+  <form id="data-form" class="space-y-4">
+    <div>
+      <label for="message" class="text-sm font-medium text-gray-700 block">메시지</label>
+      <textarea id="message" name="message" rows="3" required
+                class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+    </div>
+    <div>
+      <button type="submit"
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">
+        전송
+      </button>
+    </div>
+  </form>
+
+  <!-- 상태 메시지 표시 영역 -->
+  <div id="status-message" class="text-center text-sm font-medium"></div>
+
+  <!-- Firestore 데이터 표시 영역 -->
+  <div class="pt-4">
+    <h2 class="text-xl font-semibold text-gray-800 text-center">메시지 목록 (실시간)</h2>
+    <div id="data-container" class="mt-4 p-4 h-64 bg-gray-50 rounded-md border border-gray-200 overflow-y-auto space-y-3">
+      <!-- 데이터가 여기에 표시됩니다. -->
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase SDK 스크립트 -->
+<script type="module">
+  // Firebase SDK 가져오기 (인증 관련 모듈 추가)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  // --- 중요 ---
+  // Firebase 프로젝트의 구성 객체
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2aFGko73dm28qnYikMbTbtZLWNaigrJc",
+    authDomain: "kyj-webapp.firebaseapp.com",
+    projectId: "kyj-webapp",
+    storageBucket: "kyj-webapp.firebasestorage.app",
+    messagingSenderId: "515379016462",
+    appId: "1:515379016462:web:7f04d4a7af889ee9855d5f",
+    measurementId: "G-KZ9SS5KKG1"
+  };
+  // --- 중요 ---
+
+  // Firebase 앱 초기화
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // DOM 요소 가져오기
+  const loginContainer = document.getElementById('login-container');
+  const loginBtn = document.getElementById('login-btn');
+  const appContainer = document.getElementById('app-container');
+  const userProfile = document.getElementById('user-profile');
+  const dataForm = document.getElementById('data-form');
+  const messageInput = document.getElementById('message');
+  const statusMessage = document.getElementById('status-message');
+  const dataContainer = document.getElementById('data-container');
+
+  // Google 로그인 함수
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+            .catch((error) => {
+              console.error("Google sign-in error", error);
+              statusMessage.textContent = 'Google 로그인 중 오류가 발생했습니다.';
+              statusMessage.className = 'text-red-600';
+            });
+  };
+
+  // 로그아웃 함수
+  const signOutUser = () => {
+    signOut(auth).catch((error) => console.error("Sign out error", error));
+  };
+
+  // Firestore에 데이터를 추가하는 함수
+  async function addDataToFirestore(user, message) {
+    if (!user) {
+      statusMessage.textContent = '로그인이 필요합니다.';
+      statusMessage.className = 'text-red-600';
+      return;
+    }
+    try {
+      await addDoc(collection(db, "messages"), {
+        name: user.displayName, // 로그인한 사용자 이름
+        uid: user.uid,            // 로그인한 사용자 UID
+        photoURL: user.photoURL,  // 로그인한 사용자 프로필 사진
+        message: message,
+        createdAt: serverTimestamp()
+      });
+      messageInput.value = ''; // 성공 시 입력 필드 초기화
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      statusMessage.textContent = '메시지 전송 중 오류가 발생했습니다.';
+      statusMessage.className = 'text-red-600';
+    }
+  }
+
+  let unsubscribeFromData = null; // 데이터 리스너 구독 해제 함수
+
+  // Firestore 데이터 실시간 수신 및 표시
+  function listenToData() {
+    // 기존 리스너가 있다면 중복 실행을 막기 위해 해제
+    if (unsubscribeFromData) unsubscribeFromData();
+
+    const q = query(collection(db, "messages"),  orderBy("createdAt", "desc"), limit(10)  );
+    unsubscribeFromData = onSnapshot(q, (querySnapshot) => {
+      dataContainer.innerHTML = ''; // 컨테이너 초기화
+      if (querySnapshot.empty) {
+        dataContainer.innerHTML = '<p class="text-gray-500 text-center">아직 메시지가 없습니다. 첫 메시지를 남겨보세요!</p>';
+        return;
+      }
+      querySnapshot.docs.reverse();
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const messageElement = document.createElement('div');
+        messageElement.className = `flex items-start gap-3 my-2 ${data.uid === auth.currentUser.uid ? 'flex-row-reverse' : ''}`;
+
+        const avatar = document.createElement('img');
+        avatar.src = data.photoURL || 'https://placehold.co/40x40/E2E8F0/94A3B8?text=:-) ';
+        avatar.className = 'w-10 h-10 rounded-full';
+
+        const msgBubble = document.createElement('div');
+        msgBubble.className = `p-3 rounded-lg max-w-xs ${data.uid === auth.currentUser.uid ? 'bg-indigo-100' : 'bg-gray-200'}`;
+
+        const nameEl = document.createElement('p');
+        nameEl.className = `text-sm font-bold ${data.uid === auth.currentUser.uid ? 'text-indigo-700' : 'text-gray-800'}`;
+        nameEl.textContent = data.name;
+
+        const messageEl = document.createElement('p');
+        messageEl.className = 'text-sm text-gray-900';
+        messageEl.textContent = data.message;
+
+        msgBubble.appendChild(nameEl);
+        msgBubble.appendChild(messageEl);
+        messageElement.appendChild(avatar);
+        messageElement.appendChild(msgBubble);
+
+        dataContainer.appendChild(messageElement);
+      });
+      dataContainer.scrollTop = dataContainer.scrollHeight;
+    });
+  }
+
+  // 인증 상태 변경 감지
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      // 사용자가 로그인한 경우
+      loginContainer.classList.add('hidden');
+      appContainer.classList.remove('hidden');
+
+      // 사용자 정보 표시
+      userProfile.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${user.photoURL}" alt="${user.displayName}" class="w-10 h-10 rounded-full">
+                        <span class="font-medium">${user.displayName}</span>
+                    </div>
+                    <button id="logout-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">로그아웃</button>
+                `;
+
+      // 이벤트 리스너 설정
+      document.getElementById('logout-btn').addEventListener('click', signOutUser);
+      dataForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (message) {
+          addDataToFirestore(user, message);
+        }
+      });
+
+      listenToData(); // 데이터 수신 시작
+
+    } else {
+      // 사용자가 로그아웃한 경우
+      appContainer.classList.add('hidden');
+      loginContainer.classList.remove('hidden');
+
+      userProfile.innerHTML = '';
+      dataContainer.innerHTML = '<p class="text-gray-500 text-center">로그인이 필요합니다.</p>';
+
+      // 데이터 리스너 구독 해제
+      if (unsubscribeFromData) unsubscribeFromData();
+    }
+  });
+
+  // 로그인 버튼 클릭 이벤트
+  loginBtn.addEventListener('click', signInWithGoogle);
+
+</script>
+
+</body>
+</html>
