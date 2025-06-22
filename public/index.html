@@ -68,6 +68,8 @@
                 <li><a href="wedding_sample_가을.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">웨딩 가을</a></li>
                 <li><a href="adv_watch.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">워치 광고</a></li>
                 <li><a href="adv_cosmetics.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">화장품 광고</a></li>
+                <li><a href="회원스케줄관리.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">회원 스케줄 관리</a></li>
+                <li><a href="megaCoffee.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">메가 커피</a></li>
             </ul>
         </div>
     </div>
@@ -192,6 +194,7 @@
 
         // 1. 사용자 입력 값 가져오기 (숫자형으로 변환)
         const current_avg_price = parseFloat(document.getElementById('current_avg_price').value);
+        //현재 투자 금액수
         const current_shares = parseInt(document.getElementById('current_shares').value);
         const current_stock_price = parseFloat(document.getElementById('current_stock_price').value);
         const target_rise_percentage = parseFloat(document.getElementById('target_rise_percentage').value);
@@ -227,6 +230,7 @@
         const total_investment = (current_avg_price * current_shares) + additional_cost;
         const new_avg_price = total_investment / total_shares;
 
+        const current_total_price = (current_avg_price * current_shares);
         localStorage.setItem("data", JSON.stringify({
             current_avg_price: current_avg_price,
             current_shares: current_shares,
@@ -241,7 +245,9 @@
             shares_to_buy,
             additional_cost,
             new_avg_price,
-            total_shares
+            total_shares,
+            total_investment,
+            current_total_price
         });
     });
 
@@ -287,6 +293,10 @@
                         <div class="flex justify-between items-center text-sm sm:text-base">
                             <span class="text-slate-600">📊 매수 후 총 보유량</span>
                             <span class="font-bold text-slate-800">${formatNumber(data.total_shares)}주</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">📊 매수 후 투자 금액</span>
+                            <span class="font-bold text-slate-800">${formatNumber(data.total_investment)}원</span>
                         </div>
                     </div>
                 </div>

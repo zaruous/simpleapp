@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 스케줄 관리 시스템</title>
+    <title>회원 스케줄 관리 시스템 (IndexedDBHelper 적용)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -132,7 +132,10 @@
 </div>
 
 
-<script>
+<script type="module">
+    // IndexedDBHelper 클래스를 외부 파일에서 가져옵니다.
+    import { IndexedDBHelper } from './IndexedDBHelper.js';
+
     document.addEventListener('DOMContentLoaded', () => {
         // --- DOM 요소 참조 ---
         const memberNameInput = document.getElementById('new-member-name');
@@ -155,57 +158,20 @@
         let scheduleData = {}; // { 'YYYY-MM-DD': { '회원명': ['HH:mm', ...] } }
         let viewMode = 'column';
 
-        // --- IndexedDB 설정 ---
-        const DB_NAME = 'ScheduleDB';
-        const STORE_NAME = 'scheduleStore';
+        // --- IndexedDB 설정 (Helper 클래스 사용) ---
+        const dbHelper = new IndexedDBHelper('ScheduleDB', 'scheduleStore');
         const DB_KEY = 'appData';
-        let db;
 
-        const initDB = () => {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
-                request.onupgradeneeded = (event) => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME);
-                    }
-                };
-                request.onsuccess = (event) => {
-                    db = event.target.result;
-                    console.log('IndexedDB가 성공적으로 초기화되었습니다.');
-                    resolve(db);
-                };
-                request.onerror = (event) => {
-                    console.error('IndexedDB 오류:', event.target.errorCode);
-                    reject(event.target.errorCode);
-                };
-            });
-        };
-
-        const saveDataToDB = () => {
-            if (!db) return;
-            const transaction = db.transaction([STORE_NAME], 'readwrite');
-            const store = transaction.objectStore(STORE_NAME);
-            const dataToSave = { members, scheduleData };
-            store.put(dataToSave, DB_KEY);
-            transaction.oncomplete = () => console.log('데이터가 IndexedDB에 저장되었습니다.');
-            transaction.onerror = (event) => console.error('DB 저장 오류:', event.target.error);
-        };
-
-        const loadDataFromDB = () => {
-            return new Promise((resolve, reject) => {
-                if (!db) return reject('DB가 초기화되지 않았습니다.');
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.get(DB_KEY);
-                request.onsuccess = () => {
-                    resolve(request.result || null);
-                };
-                request.onerror = (event) => {
-                    console.error('DB 로드 오류:', event.target.error);
-                    reject(event.target.error);
-                };
-            });
+        // --- 데이터 자동 저장을 위한 공통 함수 ---
+        const saveData = async () => {
+            try {
+                const dataToSave = { members, scheduleData };
+                await dbHelper.put(DB_KEY, dataToSave);
+                console.log('데이터가 IndexedDB에 자동 저장되었습니다.');
+            } catch (error) {
+                console.error('DB 저장 오류:', error);
+                showToast('데이터 저장에 실패했습니다.');
+            }
         };
 
         // --- 유틸리티 함수 ---
@@ -218,19 +184,20 @@
         // --- 초기화 ---
         const initialize = async () => {
             try {
-                await initDB();
-                const savedData = await loadDataFromDB();
+                const savedData = await dbHelper.get(DB_KEY);
                 if (savedData && savedData.members) {
                     members = savedData.members;
                     scheduleData = savedData.scheduleData || {};
                     showToast('저장된 데이터를 불러왔습니다.');
                 } else {
+                    // 기본 데이터
                     members = ['김민준', '이서연', '박도윤'];
                     scheduleData = {};
                 }
             } catch (error) {
                 console.error('초기화 중 오류 발생:', error);
                 showToast('데이터 로딩에 실패했습니다.');
+                // 로딩 실패 시 기본 데이터 사용
                 members = ['김민준', '이서연', '박도윤'];
                 scheduleData = {};
             }
@@ -284,14 +251,14 @@
             document.querySelectorAll('.member-name-btn').forEach(btn => btn.addEventListener('click', (e) => handleMemberNameClick(e.currentTarget.textContent)));
         };
 
-        const handleAddMember = () => {
+        const handleAddMember = async () => {
             const name = memberNameInput.value.trim();
             if (name && !members.includes(name)) {
                 members.push(name);
                 memberNameInput.value = '';
                 renderMemberList();
                 renderScheduleGrid();
-                saveDataToDB();
+                await saveData();
                 showToast(`'${name}' 회원이 추가되었습니다.`);
             } else if (members.includes(name)) {
                 showToast('이미 존재하는 회원입니다.');
@@ -300,16 +267,16 @@
             }
         };
 
-        const handleDeleteMember = (e) => {
+        const handleDeleteMember = async (e) => {
             const nameToDelete = e.target.dataset.name;
             if (confirm(`'${nameToDelete}' 회원을 삭제하시겠습니까? 관련 스케줄도 모두 삭제됩니다.`)) {
                 members = members.filter(name => name !== nameToDelete);
                 Object.keys(scheduleData).forEach(date => {
-                    delete scheduleData[date][nameToDelete];
+                    if(scheduleData[date]) delete scheduleData[date][nameToDelete];
                 });
                 renderMemberList();
                 renderScheduleGrid();
-                saveDataToDB();
+                await saveData();
                 showToast(`'${nameToDelete}' 회원이 삭제되었습니다.`);
             }
         };
@@ -367,7 +334,7 @@
             });
         };
 
-        const handleCellClick = (e) => {
+        const handleCellClick = async (e) => {
             const { time, member } = e.target.dataset;
             const selectedDate = datePicker.value;
             if (!scheduleData[selectedDate]) scheduleData[selectedDate] = {};
@@ -381,7 +348,7 @@
                 scheduleList.push(time);
                 e.target.classList.add('selected');
             }
-            saveDataToDB();
+            await saveData();
         };
 
         // --- Modal/Popup 기능 ---
@@ -450,6 +417,7 @@
 
         const dateToWeekString = (date) => {
             const tempDate = new Date(date.valueOf());
+            tempDate.setHours(0, 0, 0, 0);
             const dayNum = (date.getDay() + 6) % 7;
             tempDate.setDate(tempDate.getDate() - dayNum + 3);
             const firstThursday = tempDate.valueOf();
@@ -457,22 +425,21 @@
             if (tempDate.getDay() !== 4) {
                 tempDate.setMonth(0, 1 + ((4 - tempDate.getDay()) + 7) % 7);
             }
-            const weekNum = 1 + Math.ceil((firstThursday - tempDate) / 604800000);
+            const weekNum = 1 + Math.ceil((firstThursday - tempDate) / 604800000); // 604800000 = 7 * 24 * 3600 * 1000
             return `${date.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
         };
 
         const getDateFromWeekString = (weekString) => { // "YYYY-Www"
             const [year, weekNum] = weekString.split('-W').map(Number);
-            const d = new Date(year, 0, 1 + (weekNum - 1) * 7);
-            const dayOfWeek = d.getDay();
-            const diff = d.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-            return new Date(d.setDate(diff));
+            const d = new Date(Date.UTC(year, 0, 1 + (weekNum - 1) * 7));
+            const dayOfWeek = d.getUTCDay();
+            const diff = d.getUTCDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+            return new Date(d.setUTCDate(diff));
         };
-
 
         // --- 데이터 JSON 저장/로드 기능 ---
         const handleSaveToJson = () => {
-            const dataToSave = { members: members, scheduleData: scheduleData };
+            const dataToSave = { members, scheduleData };
             const jsonString = JSON.stringify(dataToSave, null, 2);
             const blob = new Blob([jsonString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -490,7 +457,7 @@
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = async (event) => {
                 try {
                     const loadedData = JSON.parse(event.target.result);
                     if (loadedData.members && loadedData.scheduleData) {
@@ -498,7 +465,7 @@
                         scheduleData = loadedData.scheduleData;
                         renderMemberList();
                         renderScheduleGrid();
-                        saveDataToDB();
+                        await saveData();
                         showToast('JSON 파일에서 데이터를 불러왔습니다.');
                     } else {
                         showToast('올바른 JSON 파일 형식이 아닙니다.');
@@ -509,7 +476,7 @@
                 }
             };
             reader.readAsText(file);
-            e.target.value = null;
+            e.target.value = null; // 동일한 파일 다시 선택 가능하도록 초기화
         };
 
         // --- 앱 실행 ---

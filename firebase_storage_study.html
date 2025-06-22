@@ -78,7 +78,7 @@
     apiKey: "AIzaSyB2aFGko73dm28qnYikMbTbtZLWNaigrJc",
     authDomain: "kyj-webapp.firebaseapp.com",
     projectId: "kyj-webapp",
-    storageBucket: "kyj-webapp.firebasestorage.app",
+    storageBucket: "kyj-webapp.appspot.com",
     messagingSenderId: "515379016462",
     appId: "1:515379016462:web:7f04d4a7af889ee9855d5f",
     measurementId: "G-KZ9SS5KKG1"
@@ -153,9 +153,15 @@
         dataContainer.innerHTML = '<p class="text-gray-500 text-center">아직 메시지가 없습니다. 첫 메시지를 남겨보세요!</p>';
         return;
       }
-      querySnapshot.docs.reverse();
 
-      querySnapshot.forEach((doc) => {
+      // *** 변경된 부분 ***
+      // querySnapshot.docs는 최신순(내림차순)으로 정렬되어 있습니다.
+      // .reverse()를 호출하여 배열의 순서를 시간순(오름차순)으로 뒤집습니다.
+      const docsInChronologicalOrder = querySnapshot.docs.reverse();
+
+      // 이제 시간순으로 정렬된 배열을 순회하며 화면에 메시지를 표시합니다.
+      docsInChronologicalOrder.forEach((doc) => {
+        // *** 변경된 부분 ***
         const data = doc.data();
         const messageElement = document.createElement('div');
         messageElement.className = `flex items-start gap-3 my-2 ${data.uid === auth.currentUser.uid ? 'flex-row-reverse' : ''}`;
