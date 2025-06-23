@@ -152,24 +152,17 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getConfig } from "./firebase-config.js";
 
     document.addEventListener('DOMContentLoaded', () => {
         // --- Firebase Configuration ---
         // 🚨 SECURITY WARNING: Do not commit this file with real keys to a public repository.
         // It's recommended to use environment variables for production.
-        const firebaseConfig = {
-            apiKey: "AIzaSyB2aFGko73dm28qnYikMbTbtZLWNaigrJc",
-            authDomain: "kyj-webapp.firebaseapp.com",
-            projectId: "kyj-webapp",
-            storageBucket: "kyj-webapp.appspot.com",
-            messagingSenderId: "515379016462",
-            appId: "1:515379016462:web:7f04d4a7af889ee9855d5f",
-            measurementId: "G-KZ9SS5KKG1"
-        };
+        const firebaseConfig = getConfig();
 
         // BUG FIX: This 'appId' is crucial for constructing the database path.
         // It is expected to be injected by the environment or use a default value.
-        const appId = '1:515379016462:web:7f04d4a7af889ee9855d5f';
+        const appId = firebaseConfig.appId;
 
 
         // --- Firebase Initialization ---
