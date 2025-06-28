@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에니어그램 심리 테스트</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .question-item {
+      transition: background-color 0.2s ease-in-out;
+    }
+    .question-item input:checked + span {
+      color: #2563eb; /* blue-600 */
+      font-weight: 500;
+    }
+    .result-card {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+<div class="container mx-auto p-4 md:p-8 max-w-4xl">
+  <div id="test-container">
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">에니어그램 테스트</h1>
+      <p class="text-lg text-gray-600">다음 문항들을 읽고, 자신에게 해당된다고 생각하는 문항을 모두 선택해주세요.</p>
+    </header>
+
+    <main id="questions-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white p-6 rounded-lg shadow-md">
+      <!-- 질문은 JavaScript로 동적으로 생성됩니다 -->
+    </main>
+
+    <footer class="text-center mt-8">
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300">
+        결과 보기
+      </button>
+    </footer>
+  </div>
+
+  <div id="result-container" class="hidden">
+    <!-- 결과는 JavaScript로 동적으로 생성됩니다 -->
+  </div>
+</div>
+
+<script>
+  const questions = [
+    { text: "다른 사람을 돕는 것을 좋아한다.", type: 2 },
+    { text: "감정이 풍부하다는 소리를 자주 듣는다.", type: 4 },
+    { text: "무슨 일이든 신중하게 처리한다.", type: 6 },
+    { text: "여러 사람과 함께 어울리는 것을 좋아한다.", type: 7 },
+    { text: "겸손한 편이다.", type: 9 },
+    { text: "약속을 잘 지킨다.", type: 1 },
+    { text: "나의 의견을 분명하게 말하는 편이다.", type: 8 },
+    { text: "성공을 위해 노력하는 편이다.", type: 3 },
+    { text: "혼자 있는 시간을 즐긴다.", type: 5 },
+    { text: "다른 사람의 기분을 잘 알아차린다.", type: 2 },
+    { text: "특별한 사람이 되기를 원한다.", type: 4 },
+    { text: "안전을 중요하게 생각한다.", type: 6 },
+    { text: "긍정적인 편이다.", type: 7 },
+    { text: "다른 사람의 의견을 잘 따른다.", type: 9 },
+    { text: "책임감이 강하다.", type: 1 },
+    { text: "지시하는 것을 좋아한다.", type: 8 },
+    { text: "유능한 사람이란 소리를 듣는다.", type: 3 },
+    { text: "많은 것을 알고 싶어 한다.", type: 5 },
+    { text: "관대한 편이다.", type: 2 },
+    { text: "쉽게 우울해진다.", type: 4 },
+    { text: "규칙을 잘 지키는 편이다.", type: 6 },
+    { text: "재치 있다는 말을 듣는다.", type: 7 },
+    { text: "남 앞에 나서는 것을 좋아하지 않는다.", type: 9 },
+    { text: "예의 바른 사람이다.", type: 1 },
+    { text: "리더가 되는 것을 좋아한다.", type: 8 },
+    { text: "자신감이 넘친다.", type: 3 },
+    { text: "감정을 드러내는 것을 좋아하지 않는다.", type: 5 },
+    { text: "다른 사람의 문제를 잘 들어준다.", type: 2 },
+    { text: "질투심이 많은 편이다.", type: 4 },
+    { text: "동료들과 협력하는 것을 좋아한다.", type: 6 },
+    { text: "하고 싶은 일이 많다.", type: 7 },
+    { text: "편안한 것을 좋아한다.", type: 9 },
+    { text: "양심적인 사람이다.", type: 1 },
+    { text: "솔직한 편이다.", type: 8 },
+    { text: "야망이 있다.", type: 3 },
+    { text: "분석하는 것을 좋아한다.", type: 5 },
+    { text: "따뜻한 마음을 가지고 있다.", type: 2 },
+    { text: "쉽게 상처받는다.", type: 4 },
+    { text: "조직에 충실한 편이다.", type: 6 },
+    { text: "모험을 즐긴다.", type: 7 },
+    { text: "고집이 센 편이다.", type: 9 },
+    { text: "공정한 사람이다.", type: 1 },
+    { text: "남을 통제하려는 경향이 있다.", type: 8 },
+    { text: "나의 일에 몰두하는 편이다.", type: 3 },
+    { text: "관찰력이 뛰어나다.", type: 5 },
+    { text: "다정한 사람이다.", type: 2 },
+    { text: "변덕스러운 편이다.", type: 4 },
+    { text: "불안감을 쉽게 느낀다.", type: 6 },
+    { text: "산만한 편이다.", type: 7 },
+    { text: "느긋한 성격이다.", type: 9 },
+    { text: "정직하다.", type: 1 },
+    { text: "목소리가 큰 편이다.", type: 8 },
+    { text: "실용적인 사람이다.", type: 3 },
+    { text: "생각이 많다.", type: 5 },
+    { text: "다른 사람에게 잘 맞춰준다.", type: 2 },
+    { text: "나 자신에게 몰두하는 편이다.", type: 4 },
+    { text: "성실한 사람이다.", type: 6 },
+    { text: "충동적인 편이다.", type: 7 },
+    { text: "갈등을 싫어한다.", type: 9 },
+    { text: "도덕적인 사람이다.", type: 1 },
+    { text: "자기중심적이다.", type: 8 },
+    { text: "목표 지향적이다.", type: 3 },
+    { text: "객관적인 사람이다.", type: 5 }
+  ];
+
+  const results = {
+    1: { name: "개혁가 (The Reformer)", description: "원칙을 중시하고 완벽을 추구하는 유형입니다. 책임감이 강하고 정직하며, 세상을 더 나은 곳으로 만들고자 하는 이상을 가지고 있습니다.", 강점: "성실함, 책임감, 정직함", 보완할점: "지나친 비판, 융통성 부족" },
+    2: { name: "조력가 (The Helper)", description: "타인에게 베풀고 도움을 주는 것을 통해 사랑을 얻으려는 따뜻한 유형입니다. 공감 능력이 뛰어나고 사람들의 필요를 잘 파악합니다.", 강점: "친절함, 공감 능력, 관대함", 보완할점: "자신의 필요 무시, 소유욕" },
+    3: { name: "성취가 (The Achiever)", description: "성공과 성취를 통해 자신의 가치를 증명하려는 의욕적인 유형입니다. 목표 지향적이고 효율적이며, 주변 사람들에게 동기를 부여합니다.", 강점: "자신감, 효율성, 열정", 보완할점: "일 중독, 감정 억압" },
+    4: { name: "예술가 (The Individualist)", description: "자신만의 독특함과 개성을 추구하는 창의적인 유형입니다. 감수성이 풍부하고 내면의 세계를 중요시하며, 평범함을 거부합니다.", 강점: "창의성, 깊은 감수성, 독창성", 보완할점: "변덕스러움, 우울감" },
+    5: { name: "탐구가 (The Investigator)", description: "지식과 정보를 수집하고 분석하는 것을 좋아하는 지적인 유형입니다. 객관적이고 통찰력이 있으며, 복잡한 문제를 해결하는 데 능숙합니다.", 강점: "통찰력, 객관성, 지적임", 보완할점: "사회적 거리감, 정서적 고립" },
+    6: { name: "충성가 (The Loyalist)", description: "안전과 안정을 추구하며, 신뢰할 수 있는 관계와 소속감을 중요시하는 유형입니다. 책임감이 강하고 성실하며, 잠재적 위험에 대비합니다.", 강점: "충실함, 책임감, 신중함", 보완할점: "불안감, 의심" },
+    7: { name: "낙천가 (The Enthusiast)", description: "즐거움과 새로운 경험을 끊임없이 추구하는 활기찬 유형입니다. 긍정적이고 낙관적이며, 다양한 재능을 가지고 있습니다.", 강점: "긍정성, 다재다능함, 열정", 보완할점: "산만함, 고통 회피" },
+    8: { name: "도전가 (The Challenger)", description: "자신의 삶을 스스로 통제하고, 정의를 위해 싸우는 힘있는 유형입니다. 자신감이 넘치고 결단력이 있으며, 약자를 보호하려는 경향이 있습니다.", 강점: "자신감, 결단력, 리더십", 보완할점: "공격성, 통제욕" },
+    9: { name: "평화주의자 (The Peacemaker)", description: "내면의 평화와 외부 세계와의 조화를 추구하는 온화한 유형입니다. 수용적이고 인내심이 많으며, 갈등을 중재하는 역할을 잘합니다.", 강점: "수용력, 인내심, 조화로움", 보완할점: "우유부단함, 갈등 회피" }
+  };
+
+  const questionsContainer = document.getElementById('questions-container');
+  const submitBtn = document.getElementById('submit-btn');
+
+  let answers = [];
+
+  function renderQuestions() {
+    questionsContainer.innerHTML = '';
+    questions.forEach((q, index) => {
+      const label = document.createElement('label');
+      label.className = 'flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-100 question-item';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'h-5 w-5 rounded text-blue-600 focus:ring-blue-500 border-gray-300';
+      checkbox.dataset.type = q.type;
+
+      checkbox.addEventListener('change', (e) => {
+        const type = parseInt(e.target.dataset.type);
+        if (e.target.checked) {
+          answers.push(type);
+        } else {
+          answers = answers.filter(ans => ans !== type);
+        }
+      });
+
+      const text = document.createElement('span');
+      text.className = 'ml-3 text-gray-700 select-none';
+      text.textContent = q.text;
+
+      label.appendChild(checkbox);
+      label.appendChild(text);
+      questionsContainer.appendChild(label);
+    });
+  }
+
+  function calculateResult() {
+    if (answers.length === 0) return null;
+
+    const scores = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0};
+    answers.forEach(type => {
+      scores[type]++;
+    });
+
+    let maxScore = 0;
+    let resultType = -1;
+    // 점수가 가장 높은 유형을 찾습니다.
+    // 동점일 경우, 번호가 작은 유형이 결과가 됩니다.
+    for(const type in scores) {
+      if(scores[type] > maxScore) {
+        maxScore = scores[type];
+        resultType = type;
+      }
+    }
+    return resultType;
+  }
+
+  function showResult(type) {
+    const testContainer = document.getElementById('test-container');
+    const resultContainer = document.getElementById('result-container');
+
+    if (!type || !results[type]) {
+      alert("문항을 하나 이상 선택해주세요.");
+      return;
+    }
+    const resultData = results[type];
+
+    resultContainer.innerHTML = `
+                <div class="bg-white p-8 rounded-xl shadow-2xl text-center result-card">
+                    <h2 class="text-2xl font-bold text-gray-600 mb-2">당신의 에니어그램 유형은</h2>
+                    <h1 class="text-5xl font-extrabold text-blue-600 mb-4">${type}번 - ${resultData.name}</h1>
+                    <div class="w-full h-auto flex items-center justify-center bg-gray-200 rounded-lg my-6 p-10">
+                         <p class="text-lg text-gray-700 leading-relaxed">${resultData.description}</p>
+                    </div>
+                    <div class="text-left grid md:grid-cols-2 gap-6 my-6">
+                        <div class="bg-green-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">강점</h3>
+                            <p class="text-green-700">${resultData.강점}</p>
+                        </div>
+                        <div class="bg-red-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">보완할 점</h3>
+                            <p class="text-red-700">${resultData.보완할점}</p>
+                        </div>
+                    </div>
+                    <button onclick="location.reload()" class="mt-8 bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300">
+                        테스트 다시하기
+                    </button>
+                </div>
+            `;
+
+    testContainer.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
+  }
+
+  submitBtn.addEventListener('click', () => {
+    const resultType = calculateResult();
+    showResult(resultType);
+  });
+
+  // 초기 질문 렌더링
+  renderQuestions();
+</script>
+</body>
+</html>

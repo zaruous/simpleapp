@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주식 물타기 계산기</title>
+    <!-- Tailwind CSS CDN을 로드합니다. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter for general text, Noto Sans KR for Korean)를 로드합니다. -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
           rel="stylesheet">
     <style>
@@ -13,24 +15,72 @@
             font-family: 'Inter', 'Noto Sans KR', sans-serif;
         }
 
-        /* 입력 필드에서 화살표 숨기기 */
+        /* 숫자 입력 필드에서 스핀 버튼(화살표)을 숨깁니다. */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            -webkit-appearance: none; /* 웹킷 기반 브라우저용 */
+            margin: 0; /* 여백 제거 */
         }
 
         input[type=number] {
-            -moz-appearance: textfield;
+            -moz-appearance: textfield; /* 파이어폭스용 */
+        }
+
+        /* 스크롤바 숨기기 (선택 사항, 디자인에 따라) */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
         }
     </style>
 </head>
 <body class="bg-slate-100">
 
-<div class="flex h-screen">
-    <!-- Desktop Sidebar -->
-    <div class="w-1/5 p-4 bg-gray-200 hidden lg:block">
-        <h2 class="text-xl font-bold mb-4 text-slate-700">메뉴</h2>
+<div class="flex h-screen flex-col lg:flex-row">
+    <!-- 모바일 헤더 (모바일에서만 보임) -->
+    <header class="lg:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30">
+        <!-- 모바일 메뉴 열기 버튼 -->
+        <button id="open-menu-btn" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">주식 물타기 계산기</h1>
+        <div class="w-8"></div> <!-- 햄버거 버튼과 균형을 맞추기 위한 스페이서 -->
+    </header>
+
+    <!-- 데스크톱 사이드바 및 모바일 메뉴 패널 공통 구조 -->
+    <div id="sidebar-panel" class="w-full lg:w-1/4 p-4 bg-gray-200 lg:block
+                                   fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0
+                                   transition-transform duration-300 ease-in-out lg:relative lg:shadow-none">
+        <div class="flex justify-between items-center mb-6 lg:hidden">
+            <h2 class="text-xl font-bold text-slate-700">메뉴</h2>
+            <!-- 모바일 메뉴 닫기 버튼 -->
+            <button id="close-menu-btn" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <!-- 종목 목록 섹션 -->
+        <div class="mb-6 bg-white p-4 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold text-slate-700 mb-3">내 종목 목록</h3>
+            <div class="flex space-x-2 mb-3">
+                <input type="text" id="stock_name_input" placeholder="새 종목명 입력"
+                       class="flex-grow px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500 transition">
+                <button id="add-stock-btn"
+                        class="px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 active:bg-green-700 transition-colors text-sm">
+                    추가
+                </button>
+            </div>
+            <ul id="stock-list" class="space-y-2 max-h-60 overflow-y-auto hide-scrollbar">
+                <!-- 종목 리스트가 여기에 동적으로 삽입됩니다. -->
+                <li class="p-3 text-slate-600 bg-gray-100 rounded-lg text-center">저장된 종목이 없습니다.</li>
+            </ul>
+        </div>
+
+        <!-- 기타 메뉴 (기존 사이드바 항목) -->
+        <h2 class="text-xl font-bold mb-4 text-slate-700">기타 메뉴</h2>
         <ul class="space-y-2">
             <li><a href="index.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-300 transition-colors">메인 페이지</a></li>
             <li><a href="rise_calculator.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-300 transition-colors">상승률 계산기</a></li>
@@ -47,53 +97,20 @@
             <li><a href="megaCoffee.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-300 transition-colors">메가 커피</a></li>
         </ul>
     </div>
-
-    <!-- Mobile Menu Panel (Hidden by default, slides in) -->
-    <div id="mobile-menu" class="lg:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-        <div class="p-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-slate-700">메뉴</h2>
-                <button id="close-menu-btn" class="p-2">
-                    <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <ul class="space-y-2">
-                <li><a href="index.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">메인 페이지</a></li>
-                <li><a href="rise_calculator.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">상승률 계산기</a></li>
-                <li><a href="charts_examples.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">샘플 차트</a></li>
-                <li><a href="portfolio.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">포트폴리오</a></li>
-                <li><a href="portfolio2.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">포트폴리오2</a></li>
-                <li><a href="devBlog.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">개발블로그</a></li>
-                <li><a href="wedding_sample.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">웨딩</a></li>
-                <li><a href="wedding_sample_가을.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">웨딩 가을</a></li>
-                <li><a href="adv_watch.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">워치 광고</a></li>
-                <li><a href="adv_cosmetics.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">화장품 광고</a></li>
-                <li><a href="회원스케줄관리.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">회원 스케줄 관리</a></li>
-                <li><a href="megaCoffee.html" class="block py-2 px-3 rounded-lg text-blue-600 hover:bg-gray-100 transition-colors">메가 커피</a></li>
-            </ul>
-        </div>
-    </div>
-    <!-- Overlay for when mobile menu is open -->
+    <!-- 모바일 메뉴가 열렸을 때 배경을 어둡게 하는 오버레이 -->
     <div id="menu-overlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
-    <!-- Main Content -->
-    <div class="w-full lg:w-4/5 flex-1 flex flex-col">
-        <!-- Mobile Header -->
-        <header class="lg:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30">
-            <button id="open-menu-btn" class="p-2">
-                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-            <!-- Page title can be dynamically set here if needed -->
-            <div class="w-8"></div> <!-- Spacer to center the (non-existent) title or just balance the hamburger button -->
-        </header>
-
-        <!-- Scrollable content area -->
-        <main class="flex-1 p-4 overflow-y-auto">
+    <!-- 메인 콘텐츠 영역 -->
+    <div class="w-full lg:w-3/4 flex-1 flex flex-col p-4 overflow-y-auto">
+        <main class="flex-1">
             <div class="calculator-container bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
                 <div class="text-center mb-6">
                     <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">주식 물타기 계산기</h1>
                     <p class="text-sm sm:text-base text-slate-500 mt-2">
                         현재가에서 특정 비율만큼 상승 시 손익분기점에 도달하기 위한 추가 매수 수량과 비용을 계산합니다.
+                    </p>
+                    <p id="current-stock-display" class="mt-4 text-lg font-semibold text-blue-700">
+                        선택된 종목: <span class="font-bold">없음</span>
                     </p>
                 </div>
 
@@ -102,34 +119,40 @@
                     <div>
                         <label for="current_avg_price" class="block text-sm font-medium text-slate-600 mb-1">나의 평균단가
                             (원)</label>
-                        <input type="number" id="current_avg_price" value="12230"
+                        <input type="number" id="current_avg_price" value=""
                                class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                                placeholder="예: 12230" required>
                     </div>
                     <div>
                         <label for="current_shares" class="block text-sm font-medium text-slate-600 mb-1">보유 주식 수</label>
-                        <input type="number" id="current_shares" value="100"
+                        <input type="number" id="current_shares" value=""
                                class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                                placeholder="예: 100" required>
                     </div>
                     <div>
                         <label for="current_stock_price" class="block text-sm font-medium text-slate-600 mb-1">현재가 (추가 매수할
                             가격, 원)</label>
-                        <input type="number" id="current_stock_price" value="10930"
+                        <input type="number" id="current_stock_price" value=""
                                class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                                placeholder="예: 10930" required>
                     </div>
                     <div>
                         <label for="target_rise_percentage" class="block text-sm font-medium text-slate-600 mb-1">목표 상승률
                             (%)</label>
-                        <input type="number" id="target_rise_percentage" value="3"
+                        <input type="number" id="target_rise_percentage" value=""
                                class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                                required>
                     </div>
-                    <button type="submit"
-                            class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
-                        계산하기
-                    </button>
+                    <div class="flex space-x-2">
+                        <button type="submit" id="calculate-btn"
+                                class="flex-1 py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
+                            계산 및 저장
+                        </button>
+                        <button type="button" id="delete-stock-btn"
+                                class="py-3 px-4 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-transform transform active:scale-[0.98]">
+                            종목 삭제
+                        </button>
+                    </div>
                 </form>
 
                 <!-- 결과 표시 영역 -->
@@ -153,93 +176,348 @@
 
 
 <script>
-    // --- Mobile Menu Script ---
+    // --- 모바일 메뉴 스크립트 ---
     const openMenuBtn = document.getElementById('open-menu-btn');
     const closeMenuBtn = document.getElementById('close-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenu = document.getElementById('sidebar-panel'); // 사이드바 패널을 모바일 메뉴로 사용
     const menuOverlay = document.getElementById('menu-overlay');
 
+    /**
+     * 모바일 메뉴를 엽니다.
+     */
     function openMenu() {
-        mobileMenu.classList.remove('-translate-x-full');
-        menuOverlay.classList.remove('hidden');
+        mobileMenu.classList.remove('-translate-x-full'); // 메뉴를 보이게 함
+        menuOverlay.classList.remove('hidden'); // 오버레이를 보이게 함
     }
 
+    /**
+     * 모바일 메뉴를 닫습니다.
+     */
     function closeMenu() {
-        mobileMenu.classList.add('-translate-x-full');
-        menuOverlay.classList.add('hidden');
+        mobileMenu.classList.add('-translate-x-full'); // 메뉴를 숨김
+        menuOverlay.classList.add('hidden'); // 오버레이를 숨김
     }
 
+    // 메뉴 버튼 및 오버레이에 이벤트 리스너를 추가합니다.
     openMenuBtn.addEventListener('click', openMenu);
     closeMenuBtn.addEventListener('click', closeMenu);
     menuOverlay.addEventListener('click', closeMenu);
 
 
-    // --- Calculator Script ---
-    const strData = localStorage.getItem("data");
+    // --- 계산기 및 종목 관리 스크립트 ---
 
-    if (strData) {
-        const data = JSON.parse(strData);
-        if (data.current_avg_price)
-            document.getElementById('current_avg_price').value = data.current_avg_price;
-        if (data.current_shares)
-            document.getElementById('current_shares').value = data.current_shares;
-        if (data.current_stock_price)
-            document.getElementById('current_stock_price').value = data.current_stock_price;
-        if (data.target_rise_percentage)
-            document.getElementById('target_rise_percentage').value = data.target_rise_percentage;
+    let stocks = []; // 모든 종목 데이터를 저장할 배열
+    let currentStockIndex = -1; // 현재 선택된 종목의 인덱스
+
+    // DOM 요소 참조
+    const stockNameInput = document.getElementById('stock_name_input');
+    const addStockBtn = document.getElementById('add-stock-btn');
+    const stockListUl = document.getElementById('stock-list');
+    const currentStockDisplay = document.getElementById('current-stock-display').querySelector('span');
+    const deleteStockBtn = document.getElementById('delete-stock-btn');
+
+    const currentAvgPriceInput = document.getElementById('current_avg_price');
+    const currentSharesInput = document.getElementById('current_shares');
+    const currentStockPriceInput = document.getElementById('current_stock_price');
+    const targetRisePercentageInput = document.getElementById('target_rise_percentage');
+    const calcForm = document.getElementById('calc-form');
+    const resultDiv = document.getElementById('result');
+
+    /**
+     * 로컬 스토리지에서 종목 데이터를 불러옵니다.
+     */
+    function loadStocks() {
+        const storedStocks = localStorage.getItem('savedStocks');
+        if (storedStocks) {
+            stocks = JSON.parse(storedStocks);
+        } else {
+            stocks = []; // 저장된 데이터가 없으면 빈 배열로 초기화
+        }
+        renderStockList(); // 종목 목록을 화면에 렌더링
+        // 저장된 종목이 있으면 첫 번째 종목을 선택합니다.
+        if (stocks.length > 0) {
+            selectStock(0);
+        } else {
+            clearForm(); // 종목이 없으면 폼을 비웁니다.
+            displayMessage('새 종목을 추가하여 계산을 시작하세요.', 'info');
+            currentStockDisplay.textContent = '없음';
+            deleteStockBtn.classList.add('hidden'); // 종목이 없으면 삭제 버튼 숨김
+        }
     }
 
-    document.getElementById('calc-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // 폼의 기본 제출 동작(새로고침)을 막습니다.
+    /**
+     * 현재 종목 데이터를 로컬 스토리지에 저장합니다.
+     */
+    function saveStocks() {
+        localStorage.setItem('savedStocks', JSON.stringify(stocks));
+    }
 
-        // 1. 사용자 입력 값 가져오기 (숫자형으로 변환)
-        const current_avg_price = parseFloat(document.getElementById('current_avg_price').value);
-        //현재 투자 금액수
-        const current_shares = parseInt(document.getElementById('current_shares').value);
-        const current_stock_price = parseFloat(document.getElementById('current_stock_price').value);
-        const target_rise_percentage = parseFloat(document.getElementById('target_rise_percentage').value);
+    /**
+     * 종목 목록을 화면에 렌더링합니다.
+     */
+    function renderStockList() {
+        stockListUl.innerHTML = ''; // 기존 목록을 비웁니다.
+        if (stocks.length === 0) {
+            stockListUl.innerHTML = '<li class="p-3 text-slate-600 bg-gray-100 rounded-lg text-center">저장된 종목이 없습니다.</li>';
+            return;
+        }
 
-        const resultDiv = document.getElementById('result');
+        stocks.forEach((stock, index) => {
+            const li = document.createElement('li');
+            li.className = `flex justify-between items-center p-3 rounded-lg cursor-pointer transition-colors 
+                            ${index === currentStockIndex ? 'bg-blue-200 text-blue-800 font-semibold shadow-md' : 'bg-white text-slate-700 hover:bg-gray-100'}`;
+            li.innerHTML = `
+                <span>${stock.name}</span>
+                <button data-index="${index}" class="delete-item-btn text-red-500 hover:text-red-700 ml-2 p-1 rounded-full hover:bg-red-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+            li.addEventListener('click', (e) => {
+                // 삭제 버튼 클릭 시 이벤트 전파 방지 및 삭제 로직 실행
+                if (e.target.closest('.delete-item-btn')) {
+                    deleteStock(parseInt(e.target.closest('.delete-item-btn').dataset.index));
+                } else {
+                    selectStock(index); // 종목 선택
+                }
+            });
+            stockListUl.appendChild(li);
+        });
+    }
 
-        // 2. 입력 값 유효성 검사
+    /**
+     * 새 종목을 추가합니다.
+     */
+    function addStock() {
+        const stockName = stockNameInput.value.trim();
+        if (!stockName) {
+            displayMessage('종목명을 입력해주세요.', 'error');
+            return;
+        }
+
+        // 중복 종목명 체크
+        if (stocks.some(stock => stock.name === stockName)) {
+            displayMessage('이미 같은 이름의 종목이 있습니다. 다른 이름을 사용해주세요.', 'error');
+            return;
+        }
+
+        const newStock = {
+            name: stockName,
+            current_avg_price: 0,
+            current_shares: 0,
+            current_stock_price: 0,
+            target_rise_percentage: 0
+        };
+        stocks.push(newStock);
+        saveStocks();
+        stockNameInput.value = ''; // 입력 필드 초기화
+        selectStock(stocks.length - 1); // 새로 추가된 종목 선택
+        displayMessage(`${stockName} 종목이 추가되었습니다.`, 'success');
+    }
+
+    /**
+     * 특정 종목을 선택하여 폼에 데이터를 채웁니다.
+     * @param {number} index - 선택할 종목의 인덱스
+     */
+    function selectStock(index) {
+        if (index < 0 || index >= stocks.length) {
+            console.error('유효하지 않은 종목 인덱스:', index);
+            return;
+        }
+        currentStockIndex = index;
+        const selectedStock = stocks[currentStockIndex];
+
+        currentAvgPriceInput.value = selectedStock.current_avg_price;
+        currentSharesInput.value = selectedStock.current_shares;
+        currentStockPriceInput.value = selectedStock.current_stock_price;
+        targetRisePercentageInput.value = selectedStock.target_rise_percentage;
+
+        currentStockDisplay.textContent = selectedStock.name;
+        deleteStockBtn.classList.remove('hidden'); // 종목이 선택되면 삭제 버튼 보임
+        renderStockList(); // 선택된 종목 하이라이트 업데이트
+        // 선택된 종목의 데이터로 계산을 자동으로 실행
+        calculateAndDisplayResult();
+    }
+
+    /**
+     * 현재 폼의 데이터를 현재 선택된 종목에 저장합니다.
+     */
+    function updateStockData() {
+        if (currentStockIndex === -1) {
+            displayMessage('저장할 종목을 선택하거나 새로 추가해주세요.', 'error');
+            return;
+        }
+
+        // 입력 값 유효성 검사 (계산 로직과 동일)
+        const current_avg_price = parseFloat(currentAvgPriceInput.value);
+        const current_shares = parseInt(currentSharesInput.value);
+        const current_stock_price = parseFloat(currentStockPriceInput.value);
+        const target_rise_percentage = parseFloat(targetRisePercentageInput.value);
+
         if (isNaN(current_avg_price) || isNaN(current_shares) || isNaN(current_stock_price) || isNaN(target_rise_percentage)) {
             displayMessage('모든 값을 숫자로 올바르게 입력해주세요.', 'error');
             return;
         }
-
-        // 3. 계산 로직 수행
-        const target_price = current_stock_price * (1 + target_rise_percentage / 100);
-
-        if (current_avg_price <= target_price) {
-            displayMessage('현재 평균단가가 이미 목표가보다 낮아 추가 매수가 필요 없습니다.', 'info');
+        if (current_avg_price < 0 || current_shares < 0 || current_stock_price < 0 || target_rise_percentage < 0) {
+            displayMessage('모든 입력 값은 0 이상이어야 합니다.', 'error');
             return;
         }
 
-        // 분모가 0이 되거나 음수가 되는 경우 방지
+        // 현재 선택된 종목의 데이터 업데이트
+        stocks[currentStockIndex].current_avg_price = current_avg_price;
+        stocks[currentStockIndex].current_shares = current_shares;
+        stocks[currentStockIndex].current_stock_price = current_stock_price;
+        stocks[currentStockIndex].target_rise_percentage = target_rise_percentage;
+
+        saveStocks(); // 로컬 스토리지에 저장
+        displayMessage(`${stocks[currentStockIndex].name} 종목 정보가 저장되었습니다.`, 'success');
+        calculateAndDisplayResult(); // 저장 후 다시 계산 및 결과 표시
+    }
+
+    /**
+     * 특정 종목을 삭제합니다.
+     * @param {number} index - 삭제할 종목의 인덱스
+     */
+    function deleteStock(index) {
+        if (confirm(`${stocks[index].name} 종목을 정말 삭제하시겠습니까?`)) {
+            const deletedStockName = stocks[index].name;
+            stocks.splice(index, 1); // 배열에서 종목 제거
+            saveStocks(); // 로컬 스토리지에 저장
+
+            if (stocks.length > 0) {
+                // 삭제 후 현재 선택된 종목 인덱스 조정
+                if (currentStockIndex === index) {
+                    selectStock(0); // 삭제된 종목이 현재 선택된 종목이면 첫 번째 종목 선택
+                } else if (currentStockIndex > index) {
+                    currentStockIndex--; // 삭제된 종목보다 뒤에 있는 종목이면 인덱스 조정
+                    selectStock(currentStockIndex); // 조정된 인덱스로 다시 선택
+                } else {
+                    renderStockList(); // 인덱스 조정 필요 없으면 목록만 다시 렌더링
+                }
+            } else {
+                currentStockIndex = -1; // 종목이 없으면 인덱스 초기화
+                clearForm(); // 폼 비우기
+                currentStockDisplay.textContent = '없음';
+                deleteStockBtn.classList.add('hidden'); // 삭제 버튼 숨김
+                resultDiv.innerHTML = ''; // 결과 영역 비우기
+            }
+            displayMessage(`${deletedStockName} 종목이 삭제되었습니다.`, 'info');
+            renderStockList(); // 종목 목록 다시 렌더링
+        }
+    }
+
+    /**
+     * 폼의 모든 입력 필드를 비웁니다.
+     */
+    function clearForm() {
+        currentAvgPriceInput.value = '';
+        currentSharesInput.value = '';
+        currentStockPriceInput.value = '';
+        targetRisePercentageInput.value = '';
+        resultDiv.innerHTML = '';
+    }
+
+    /**
+     * 계산을 수행하고 결과를 화면에 표시합니다.
+     */
+    function calculateAndDisplayResult() {
+        resultDiv.innerHTML = ''; // 이전 결과 및 메시지 초기화
+
+        if (currentStockIndex === -1) {
+            displayMessage('계산할 종목을 선택하거나 새로 추가해주세요.', 'info');
+            return;
+        }
+
+        const current_avg_price = parseFloat(currentAvgPriceInput.value);
+        const current_shares = parseInt(currentSharesInput.value);
+        const current_stock_price = parseFloat(currentStockPriceInput.value);
+        const target_rise_percentage = parseFloat(targetRisePercentageInput.value);
+
+        // 입력 값 유효성 검사
+        if (isNaN(current_avg_price) || isNaN(current_shares) || isNaN(current_stock_price) || isNaN(target_rise_percentage)) {
+            displayMessage('모든 값을 숫자로 올바르게 입력해주세요.', 'error');
+            return;
+        }
+        if (current_avg_price < 0 || current_shares < 0 || current_stock_price < 0 || target_rise_percentage < 0) {
+            displayMessage('모든 입력 값은 0 이상이어야 합니다.', 'error');
+            return;
+        }
+        if (current_shares === 0 && current_avg_price > 0) {
+            displayMessage('보유 주식 수가 0이면 평균단가를 0으로 설정하거나, 보유 주식 수를 0보다 큰 값으로 입력해주세요.', 'error');
+            return;
+        }
+        if (current_shares > 0 && current_avg_price === 0) {
+             displayMessage('보유 주식 수가 0보다 크면 평균단가를 0보다 큰 값으로 입력해주세요.', 'error');
+            return;
+        }
+        // 모든 입력값이 0인 경우
+        if (current_shares === 0 && current_avg_price === 0 && current_stock_price === 0 && target_rise_percentage === 0) {
+            displayMessage('계산을 위해 유효한 값을 입력해주세요.', 'info');
+            return;
+        }
+
+
+        const target_price = current_stock_price * (1 + target_rise_percentage / 100);
+
+        // 시나리오 1: 추가 매수 불필요 (현재 평단이 이미 목표가보다 좋거나 같음)
+        if (current_avg_price <= target_price) {
+            const current_total_value = current_shares * current_stock_price;
+            const current_investment_cost = current_shares * current_avg_price;
+            const current_profit_loss = current_total_value - current_investment_cost;
+            // 투자 금액이 0인 경우 (예: 보유 주식 0), 0으로 나누는 오류 방지
+            const current_profit_loss_percentage = current_investment_cost === 0 ? 0 : (current_profit_loss / current_investment_cost) * 100;
+
+            resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg mb-4">
+                    <div class="text-center font-medium text-green-700">
+                        현재 평균단가(${formatNumber(current_avg_price, 2)}원)가 목표가(${formatNumber(target_price, 2)}원)보다 낮거나 같아 추가 매수가 필요 없습니다.
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">현재 보유량</span>
+                            <span class="font-bold text-slate-800">${formatNumber(current_shares)}주</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">현재 투자금액</span>
+                            <span class="font-bold text-slate-800">${formatNumber(current_investment_cost)}원</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm sm:text-base">
+                            <span class="text-slate-600">현재 평가 금액</span>
+                            <span class="font-bold text-slate-800">${formatNumber(current_total_value)}원</span>
+                        </div>
+                        <div class="flex justify-between items-center text-base sm:text-lg ${current_profit_loss >= 0 ? 'text-green-600' : 'text-red-600'}">
+                            <span class="font-medium">현재 손익</span>
+                            <span class="font-bold">${formatNumber(current_profit_loss)}원 (${formatNumber(current_profit_loss_percentage, 2)}%)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return; // 함수 종료
+        }
+
+        // 시나리오 2: 목표가가 현재가보다 낮거나 같아 계산 불가 (목표 상승률이 너무 낮음)
         if (target_price - current_stock_price <= 0) {
             const targetPriceFormatted = target_price.toLocaleString('ko-KR', {maximumFractionDigits: 0});
             displayMessage(`목표가(${targetPriceFormatted}원)가 현재가보다 낮거나 같아 계산할 수 없습니다. 목표 상승률을 높여주세요.`, 'error');
             return;
         }
 
+        // 시나리오 3: 일반적인 물타기 계산
         const shares_to_buy_float = (current_shares * (current_avg_price - target_price)) / (target_price - current_stock_price);
-        const shares_to_buy = Math.ceil(shares_to_buy_float); // 주식은 정수 단위로 매수해야 하므로 올림
+        const shares_to_buy = Math.ceil(shares_to_buy_float);
         const additional_cost = shares_to_buy * current_stock_price;
 
         const total_shares = current_shares + shares_to_buy;
         const total_investment = (current_avg_price * current_shares) + additional_cost;
         const new_avg_price = total_investment / total_shares;
 
-        const current_total_price = (current_avg_price * current_shares);
-        localStorage.setItem("data", JSON.stringify({
-            current_avg_price: current_avg_price,
-            current_shares: current_shares,
-            current_stock_price: current_stock_price,
-            target_rise_percentage: target_rise_percentage
-        }));
+        // 추가 매수 후 목표가 도달 시 예상 손익 계산
+        const final_value_at_target_price = total_shares * target_price;
+        const profit_loss_at_target_price = final_value_at_target_price - total_investment;
+        const profit_loss_percentage_at_target_price = total_investment === 0 ? 0 : (profit_loss_at_target_price / total_investment) * 100;
 
 
-        // 4. 결과 출력
         displayResult({
             target_price,
             shares_to_buy,
@@ -247,14 +525,15 @@
             new_avg_price,
             total_shares,
             total_investment,
-            current_total_price
+            profit_loss_at_target_price, // 추가된 데이터
+            profit_loss_percentage_at_target_price // 추가된 데이터
         });
-    });
+    }
 
     /**
      * 숫자를 한국식 통화 형식으로 포맷팅하는 함수
      * @param {number} number - 포맷팅할 숫자
-     * @param {number} fractionDigits - 소수점 자릿수
+     * @param {number} fractionDigits - 소수점 자릿수 (기본값 0)
      * @returns {string} 포맷팅된 문자열
      */
     function formatNumber(number, fractionDigits = 0) {
@@ -265,11 +544,10 @@
     }
 
     /**
-     * 결과를 화면에 표시하는 함수
+     * 계산 결과를 화면에 표시하는 함수 (일반적인 물타기 계산 결과만 담당)
      * @param {object} data - 결과 데이터 객체
      */
     function displayResult(data) {
-        const resultDiv = document.getElementById('result');
         resultDiv.innerHTML = `
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                     <div class="space-y-3">
@@ -298,29 +576,53 @@
                             <span class="text-slate-600">📊 매수 후 투자 금액</span>
                             <span class="font-bold text-slate-800">${formatNumber(data.total_investment)}원</span>
                         </div>
+                        <!-- 추가된 손익 표시 -->
+                        <div class="flex justify-between items-center text-base sm:text-lg ${data.profit_loss_at_target_price >= 0 ? 'text-green-600' : 'text-red-600'}">
+                            <span class="font-medium">📈 목표가 도달 시 예상 손익</span>
+                            <span class="font-bold">${formatNumber(data.profit_loss_at_target_price)}원 (${formatNumber(data.profit_loss_percentage_at_target_price, 2)}%)</span>
+                        </div>
                     </div>
                 </div>
             `;
     }
 
     /**
-     * 정보 또는 오류 메시지를 화면에 표시하는 함수
+     * 정보 또는 오류 메시지를 화면에 표시하는 함수 (resultDiv 전체를 대체)
      * @param {string} text - 표시할 메시지
-     * @param {string} type - 메시지 종류 ('info' 또는 'error')
+     * @param {string} type - 메시지 종류 ('info', 'error', 'success')
      */
     function displayMessage(text, type = 'info') {
-        const resultDiv = document.getElementById('result');
-        const colorClass = type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        let colorClass = '';
+        if (type === 'error') {
+            colorClass = 'bg-red-50 border-red-200 text-red-700';
+        } else if (type === 'success') {
+            colorClass = 'bg-green-50 border-green-200 text-green-700';
+        } else {
+            colorClass = 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        }
         resultDiv.innerHTML = `
-                <div class="${colorClass} p-4 rounded-lg text-center font-medium">
+                <div class="${colorClass} p-4 rounded-lg text-center font-medium mb-4">
                     ${text}
                 </div>
             `;
     }
 
-    // 페이지 로드 시 초기 계산을 한 번 실행
+    // --- 이벤트 리스너 ---
+    addStockBtn.addEventListener('click', addStock);
+    deleteStockBtn.addEventListener('click', () => {
+        if (currentStockIndex !== -1) {
+            deleteStock(currentStockIndex);
+        }
+    });
+
+    calcForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // 폼의 기본 제출 동작(새로고침)을 막습니다.
+        updateStockData(); // 현재 폼 데이터를 종목에 저장
+    });
+
+    // 페이지 로드 시 초기화
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('#calc-form button[type="submit"]').click();
+        loadStocks(); // 저장된 종목 불러오기
     });
 </script>
 </body>
